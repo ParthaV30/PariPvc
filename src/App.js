@@ -44,10 +44,48 @@ import UploadJson from './pages/uploadProfile';
 import ViewClientreport from './pages/viewclientreport';
 import NewCuttingSchedule from './pages/cuttingSchedule/cuttingSchedule';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: "50px 20px", textAlign: "center", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+          <h3 style={{ marginBottom: "12px", color: "#212529" }}>Something went wrong loading this view</h3>
+          <p style={{ color: "#6c757d", maxWidth: "600px", margin: "0 auto 20px" }}>
+            {this.state.error?.message || "An unexpected calculation or render issue occurred."}
+          </p>
+          <button 
+            type="button"
+            className="btn btn-primary"
+            style={{ padding: "10px 24px", cursor: "pointer", borderRadius: "6px", background: "#0d6efd", color: "#fff", border: "none" }}
+            onClick={() => { this.setState({ hasError: false, error: null }); window.location.reload(); }}
+          >
+            Refresh View
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 function App() {
   return (
     <Router>
-      <Routes>
+      <ErrorBoundary>
+        <Routes>
         <Route path="/" element={<DashBoard />} />
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/login" element={<Navigate to="/" replace />} />
@@ -97,6 +135,7 @@ function App() {
         {/* Fallback all other routes to Dashboard */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      </ErrorBoundary>
     </Router>
   );
 }

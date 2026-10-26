@@ -919,16 +919,16 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedFrameSeries);
   const selectedFramePrice = selectedFrameId
-    ? seriesDataFrame.items.find((item) => item.id === selectedFrameId).price
+    ? seriesDataFrame?.items?.find((item) => item.id === selectedFrameId)?.price || '0'
     : "0";
   const selectedFrameLength = selectedFrameId
-    ? seriesDataFrame.items.find((item) => item.id === selectedFrameId).length
+    ? seriesDataFrame?.items?.find((item) => item.id === selectedFrameId)?.length || '0'
     : "0";
   const selectedFrameWeight = selectedFrameId
-    ? seriesDataFrame.items.find((item) => item.id === selectedFrameId).weight
+    ? seriesDataFrame?.items?.find((item) => item.id === selectedFrameId)?.weight || '0'
     : "0";
   const selectedFrameName = selectedFrameId
-    ? seriesDataFrame.items.find((item) => item.id === selectedFrameId).name
+    ? seriesDataFrame?.items?.find((item) => item.id === selectedFrameId)?.name || 'Loading'
     : "Loading";
 
   const [selectedShutterSeries, setSelectedShutterSeries] = useState(null);
@@ -968,7 +968,7 @@ function Editquotees() {
       .weight
     : "0";
   const selectedShutterName = selectedShutterId
-    ? seriesDataShutter.items.find((item) => item.id === selectedShutterId).name
+    ? seriesDataShutter?.items?.find((item) => item.id === selectedShutterId)?.name || 'Loading'
     : "Loading";
 
   const [selectedMullionSeries, setSelectedMullionSeries] = useState(null);
@@ -1009,7 +1009,7 @@ function Editquotees() {
       .weight
     : "0";
   const selectedMullionName = selectedMullionId
-    ? seriesDataMullion.items.find((item) => item.id === selectedMullionId).name
+    ? seriesDataMullion?.items?.find((item) => item.id === selectedMullionId)?.name || 'Loading'
     : "Loading";
 
   const [selectedBeedingSeries, setSelectedBeedingSeries] = useState(null);
@@ -1049,7 +1049,7 @@ function Editquotees() {
       .weight
     : "0";
   const selectedBeedingName = selectedBeedingId
-    ? seriesDataBeeding.items.find((item) => item.id === selectedBeedingId).name
+    ? seriesDataBeeding?.items?.find((item) => item.id === selectedBeedingId)?.name || 'Loading'
     : "Loading";
 
   const [selectedMeshSeries, setSelectedMeshSeries] = useState(null);
@@ -1077,16 +1077,16 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedMeshSeries);
   const selectedMeshPrice = selectedMeshId
-    ? seriesDataMesh.items.find((item) => item.id === selectedMeshId).price
+    ? seriesDataMesh?.items?.find((item) => item.id === selectedMeshId)?.price || '0'
     : "0";
   const selectedMeshLength = selectedMeshId
-    ? seriesDataMesh.items.find((item) => item.id === selectedMeshId).length
+    ? seriesDataMesh?.items?.find((item) => item.id === selectedMeshId)?.length || '0'
     : "0";
   const selectedMeshWeight = selectedMeshId
-    ? seriesDataMesh.items.find((item) => item.id === selectedMeshId).weight
+    ? seriesDataMesh?.items?.find((item) => item.id === selectedMeshId)?.weight || '0'
     : "0";
   const selectedMeshName = selectedMeshId
-    ? seriesDataMesh.items.find((item) => item.id === selectedMeshId).name
+    ? seriesDataMesh?.items?.find((item) => item.id === selectedMeshId)?.name || 'Loading'
     : "Loading";
 
   const [selectedCuplerSeries, setSelectedCuplerSeries] = useState(null);
@@ -1114,16 +1114,16 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedCuplerSeries);
   const selectedCuplerPrice = selectedCuplerId
-    ? seriesDataCupler.items.find((item) => item.id === selectedCuplerId).price
+    ? seriesDataCupler?.items?.find((item) => item.id === selectedCuplerId)?.price || '0'
     : "0";
   const selectedCuplerLength = selectedCuplerId
-    ? seriesDataCupler.items.find((item) => item.id === selectedCuplerId).length
+    ? seriesDataCupler?.items?.find((item) => item.id === selectedCuplerId)?.length || '0'
     : "0";
   const selectedCuplerWeight = selectedCuplerId
-    ? seriesDataCupler.items.find((item) => item.id === selectedCuplerId).weight
+    ? seriesDataCupler?.items?.find((item) => item.id === selectedCuplerId)?.weight || '0'
     : "0";
   const selectedCuplerName = selectedCuplerId
-    ? seriesDataCupler.items.find((item) => item.id === selectedCuplerId).name
+    ? seriesDataCupler?.items?.find((item) => item.id === selectedCuplerId)?.name || 'Loading'
     : "Loading";
 
   const [selectedInterLockSeries, setSelectedInterLockSeries] = useState(null);
@@ -3255,7 +3255,7 @@ function Editquotees() {
                               </select>
                               <select class="mb-3 form-select-select item-line w-75" value={selectedFrameId || ''} onChange={handleFrameIdChange}>
                                 {selectedFrameSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series First</option>)}
-                                {selectedFrameSeries && seriesDataFrame.items.map((item) => (
+                                {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame.items.map((item) => (
                                   <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                 ))}
                               </select>

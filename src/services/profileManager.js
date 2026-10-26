@@ -197,27 +197,58 @@ export function findLocalDefaultProfile(profileDatas) {
     };
   }
 
-  // 3. Fallback generic parts if specific combination isn't found
-  const baseCode = (profileId || 'PRF').slice(0, 4).toUpperCase();
+  // 3. Fallback: Lookup real items from actual profile series
+  const allProfiles = getAllProfiles();
+  const matchedProf = allProfiles.find(p => 
+    p.profileName?.toLowerCase() === profileId?.toLowerCase() ||
+    p.profileId?.toLowerCase() === profileId?.toLowerCase()
+  ) || allProfiles[0];
+
+  const matchedSeries = matchedProf?.profileData?.find(s => 
+    !series || 
+    s.series?.toLowerCase() === series?.toLowerCase() ||
+    s.series?.replace(/\s+/g, '')?.toLowerCase() === series?.replace(/\s+/g, '')?.toLowerCase()
+  ) || matchedProf?.profileData?.[0];
+
+  const items = matchedSeries?.items || [];
+  const actualSeriesName = matchedSeries?.series || series || '50 Series';
+
+  const findItemByKeywords = (keywords) => {
+    for (const kw of keywords) {
+      const match = items.find(it => it.name && it.name.toUpperCase().includes(kw));
+      if (match) return match.id;
+    }
+    return '';
+  };
+
+  const frameId = findItemByKeywords(['OUTER FRAME', 'FRAME']) || (items[0]?.id || '');
+  const shutterId = findItemByKeywords(['SASH', 'SHUTTER']) || (items[1]?.id || items[0]?.id || '');
+  const mullionId = findItemByKeywords(['MULLION', 'MULL']) || (items[2]?.id || '');
+  const beedingId = findItemByKeywords(['BEAD', 'BEEDING', 'GLAZING']) || (items[3]?.id || '');
+  const meshId = findItemByKeywords(['MESH']) || '';
+  const interlockId = findItemByKeywords(['INTERLOCK', 'INTER LOCK']) || '';
+  const panelId = findItemByKeywords(['PANEL']) || '';
+  const cuplerId = findItemByKeywords(['COUPLER', 'CUPLER']) || '';
+
   return {
     status: 'success',
     data: [
       {
-        beeding: `${baseCode}-BEED-01`,
-        beedingSeries: series || '50 Series',
-        frame: `${baseCode}-FRAME-01`,
-        frameSeries: series || '50 Series',
-        mesh: '',
-        meshSeries: '',
-        mullion: `${baseCode}-MULL-01`,
-        mullionSeries: series || '50 Series',
-        panel: '',
-        shutter: `${baseCode}-SASH-01`,
-        shutterSeries: series || '50 Series',
-        cupler: '',
-        cuplerSeries: '',
-        interlock: `${baseCode}-INT-01`,
-        interSeries: series || '50 Series'
+        beeding: beedingId,
+        beedingSeries: actualSeriesName,
+        frame: frameId,
+        frameSeries: actualSeriesName,
+        mesh: meshId,
+        meshSeries: meshId ? actualSeriesName : '',
+        mullion: mullionId,
+        mullionSeries: actualSeriesName,
+        panel: panelId,
+        shutter: shutterId,
+        shutterSeries: actualSeriesName,
+        cupler: cuplerId,
+        cuplerSeries: cuplerId ? actualSeriesName : '',
+        interlock: interlockId,
+        interSeries: interlockId ? actualSeriesName : ''
       }
     ]
   };

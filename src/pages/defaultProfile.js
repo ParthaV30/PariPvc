@@ -125,8 +125,8 @@ const App = () => {
         setSelectedPanelId(null);
       };
 
-      const profileData = profileDetails && profileDetails.data && profileDetails.data[customProfile].profileData;
-      const selectedProfile = profileDetails && profileDetails.data && profileDetails.data[customProfile].profileName;
+      const profileData = profileDetails?.data?.[customProfile]?.profileData || [];
+      const selectedProfile = profileDetails?.data?.[customProfile]?.profileName || '';
 
       const [selectedFrameSeries, setSelectedFrameSeries] = useState(null);
       const [selectedFrameId, setSelectedFrameId] = useState(null);
@@ -381,7 +381,7 @@ const App = () => {
                       <p>Select Outer Frame Profile</p>
                             <select class="form-control text-sm" value={selectedFrameId || ''} onChange={handleFrameIdChange}>
                             {selectedFrameSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                              {selectedFrameSeries && seriesDataFrame.items.map((item) => (
+                              {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame.items.map((item) => (
                                 <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                               ))}
                             </select>

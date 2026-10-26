@@ -903,10 +903,10 @@ function Editquotees() {
   });
 
   const seriesDataFrame = profileData && profileData.find(serieses => serieses.series === selectedFrameSeries);
-  const selectedFramePrice = selectedFrameId ? seriesDataFrame.items.find(item => item.id === selectedFrameId).price : '0';
-  const selectedFrameLength = selectedFrameId ? seriesDataFrame.items.find(item => item.id === selectedFrameId).length : '0';
-  const selectedFrameWeight = selectedFrameId ? seriesDataFrame.items.find(item => item.id === selectedFrameId).weight : '0';
-  const selectedFrameName = selectedFrameId ? seriesDataFrame.items.find(item => item.id === selectedFrameId).name : 'Loading';
+  const selectedFramePrice = selectedFrameId ? seriesDataFrame?.items?.find(item => item.id === selectedFrameId)?.price || '0' : '0';
+  const selectedFrameLength = selectedFrameId ? seriesDataFrame?.items?.find(item => item.id === selectedFrameId)?.length || '0' : '0';
+  const selectedFrameWeight = selectedFrameId ? seriesDataFrame?.items?.find(item => item.id === selectedFrameId)?.weight || '0' : '0';
+  const selectedFrameName = selectedFrameId ? seriesDataFrame?.items?.find(item => item.id === selectedFrameId)?.name || 'Loading' : 'Loading';
 
 
 
@@ -933,10 +933,10 @@ function Editquotees() {
   });
 
   const seriesDataShutter = profileData && profileData.find(serieses => serieses.series === selectedShutterSeries);
-  const selectedShutterPrice = selectedShutterId ? seriesDataShutter.items.find(item => item.id === selectedShutterId).price : '0';
-  const selectedShutterLength = selectedShutterId ? seriesDataShutter.items.find(item => item.id === selectedShutterId).length : '0';
-  const selectedShutterWeight = selectedShutterId ? seriesDataShutter.items.find(item => item.id === selectedShutterId).weight : '0';
-  const selectedShutterName = selectedShutterId ? seriesDataShutter.items.find(item => item.id === selectedShutterId).name : 'Loading';
+  const selectedShutterPrice = selectedShutterId ? seriesDataShutter?.items?.find(item => item.id === selectedShutterId)?.price || '0' : '0';
+  const selectedShutterLength = selectedShutterId ? seriesDataShutter?.items?.find(item => item.id === selectedShutterId)?.length || '0' : '0';
+  const selectedShutterWeight = selectedShutterId ? seriesDataShutter?.items?.find(item => item.id === selectedShutterId)?.weight || '0' : '0';
+  const selectedShutterName = selectedShutterId ? seriesDataShutter?.items?.find(item => item.id === selectedShutterId)?.name || 'Loading' : 'Loading';
 
 
 
@@ -963,10 +963,10 @@ function Editquotees() {
   });
 
   const seriesDataMullion = profileData && profileData.find(serieses => serieses.series === selectedMullionSeries);
-  const selectedMullionPrice = selectedMullionId ? seriesDataMullion.items.find(item => item.id === selectedMullionId).price : '0';
-  const selectedMullionLength = selectedMullionId ? seriesDataMullion.items.find(item => item.id === selectedMullionId).length : '0';
-  const selectedMullionWeight = selectedMullionId ? seriesDataMullion.items.find(item => item.id === selectedMullionId).weight : '0';
-  const selectedMullionName = selectedMullionId ? seriesDataMullion.items.find(item => item.id === selectedMullionId).name : "Loading";
+  const selectedMullionPrice = selectedMullionId ? seriesDataMullion?.items?.find(item => item.id === selectedMullionId)?.price || '0' : '0';
+  const selectedMullionLength = selectedMullionId ? seriesDataMullion?.items?.find(item => item.id === selectedMullionId)?.length || '0' : '0';
+  const selectedMullionWeight = selectedMullionId ? seriesDataMullion?.items?.find(item => item.id === selectedMullionId)?.weight || '0' : '0';
+  const selectedMullionName = selectedMullionId ? seriesDataMullion?.items?.find(item => item.id === selectedMullionId)?.name || 'Loading' : "Loading";
 
 
 
@@ -992,10 +992,10 @@ function Editquotees() {
   });
 
   const seriesDataBeeding = profileData && profileData.find(serieses => serieses.series === selectedBeedingSeries);
-  const selectedBeedingPrice = selectedBeedingId ? seriesDataBeeding.items.find(item => item.id === selectedBeedingId).price : '0';
-  const selectedBeedingLength = selectedBeedingId ? seriesDataBeeding.items.find(item => item.id === selectedBeedingId).length : '0';
-  const selectedBeedingWeight = selectedBeedingId ? seriesDataBeeding.items.find(item => item.id === selectedBeedingId).weight : '0';
-  const selectedBeedingName = selectedBeedingId ? seriesDataBeeding.items.find(item => item.id === selectedBeedingId).name : 'Loading';
+  const selectedBeedingPrice = selectedBeedingId ? seriesDataBeeding?.items?.find(item => item.id === selectedBeedingId)?.price || '0' : '0';
+  const selectedBeedingLength = selectedBeedingId ? seriesDataBeeding?.items?.find(item => item.id === selectedBeedingId)?.length || '0' : '0';
+  const selectedBeedingWeight = selectedBeedingId ? seriesDataBeeding?.items?.find(item => item.id === selectedBeedingId)?.weight || '0' : '0';
+  const selectedBeedingName = selectedBeedingId ? seriesDataBeeding?.items?.find(item => item.id === selectedBeedingId)?.name || 'Loading' : 'Loading';
 
 
   const [selectedMeshSeries, setSelectedMeshSeries] = useState(null);
@@ -1020,10 +1020,10 @@ function Editquotees() {
   });
 
   const seriesDataMesh = profileData && profileData.find(serieses => serieses.series === selectedMeshSeries);
-  const selectedMeshPrice = selectedMeshId ? seriesDataMesh.items.find(item => item.id === selectedMeshId).price : '0';
-  const selectedMeshLength = selectedMeshId ? seriesDataMesh.items.find(item => item.id === selectedMeshId).length : '0';
-  const selectedMeshWeight = selectedMeshId ? seriesDataMesh.items.find(item => item.id === selectedMeshId).weight : '0';
-  const selectedMeshName = selectedMeshId ? seriesDataMesh.items.find(item => item.id === selectedMeshId).name : 'Loading';
+  const selectedMeshPrice = selectedMeshId ? seriesDataMesh?.items?.find(item => item.id === selectedMeshId)?.price || '0' : '0';
+  const selectedMeshLength = selectedMeshId ? seriesDataMesh?.items?.find(item => item.id === selectedMeshId)?.length || '0' : '0';
+  const selectedMeshWeight = selectedMeshId ? seriesDataMesh?.items?.find(item => item.id === selectedMeshId)?.weight || '0' : '0';
+  const selectedMeshName = selectedMeshId ? seriesDataMesh?.items?.find(item => item.id === selectedMeshId)?.name || 'Loading' : 'Loading';
 
   const [selectedCuplerSeries, setSelectedCuplerSeries] = useState(null);
   const [selectedCuplerId, setSelectedCuplerId] = useState(null);
@@ -1047,10 +1047,10 @@ function Editquotees() {
   });
 
   const seriesDataCupler = profileData && profileData.find(serieses => serieses.series === selectedCuplerSeries);
-  const selectedCuplerPrice = selectedCuplerId ? seriesDataCupler.items.find(item => item.id === selectedCuplerId).price : "0";
-  const selectedCuplerLength = selectedCuplerId ? seriesDataCupler.items.find(item => item.id === selectedCuplerId).length : "0";
-  const selectedCuplerWeight = selectedCuplerId ? seriesDataCupler.items.find(item => item.id === selectedCuplerId).weight : "0";
-  const selectedCuplerName = selectedCuplerId ? seriesDataCupler.items.find(item => item.id === selectedCuplerId).name : "Loading";
+  const selectedCuplerPrice = selectedCuplerId ? seriesDataCupler?.items?.find(item => item.id === selectedCuplerId)?.price || '0' : "0";
+  const selectedCuplerLength = selectedCuplerId ? seriesDataCupler?.items?.find(item => item.id === selectedCuplerId)?.length || '0' : "0";
+  const selectedCuplerWeight = selectedCuplerId ? seriesDataCupler?.items?.find(item => item.id === selectedCuplerId)?.weight || '0' : "0";
+  const selectedCuplerName = selectedCuplerId ? seriesDataCupler?.items?.find(item => item.id === selectedCuplerId)?.name || 'Loading' : "Loading";
 
   //-------------------cost--------------------------//
 
@@ -2994,7 +2994,7 @@ function Editquotees() {
 
                             <select class="mb-3 form-select-select item-line w-75" value={selectedFrameId || ''} onChange={handleFrameIdChange}>
                               {selectedFrameSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series First</option>)}
-                              {selectedFrameSeries && seriesDataFrame.items.map((item) => (
+                              {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame.items.map((item) => (
                                 <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                               ))}
                             </select>

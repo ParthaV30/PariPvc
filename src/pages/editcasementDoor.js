@@ -933,16 +933,16 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedFrameSeries);
   const selectedFramePrice = selectedFrameId
-    ? seriesDataFrame.items.find((item) => item.id === selectedFrameId).price
+    ? seriesDataFrame?.items?.find((item) => item.id === selectedFrameId)?.price || '0'
     : "0";
   const selectedFrameLength = selectedFrameId
-    ? seriesDataFrame.items.find((item) => item.id === selectedFrameId).length
+    ? seriesDataFrame?.items?.find((item) => item.id === selectedFrameId)?.length || '0'
     : "0";
   const selectedFrameWeight = selectedFrameId
-    ? seriesDataFrame.items.find((item) => item.id === selectedFrameId).weight
+    ? seriesDataFrame?.items?.find((item) => item.id === selectedFrameId)?.weight || '0'
     : "0";
   const selectedFrameName = selectedFrameId
-    ? seriesDataFrame.items.find((item) => item.id === selectedFrameId).name
+    ? seriesDataFrame?.items?.find((item) => item.id === selectedFrameId)?.name || 'Loading'
     : "Loading";
 
   const [selectedShutterSeries, setSelectedShutterSeries] = useState(null);
@@ -982,7 +982,7 @@ function Editquotees() {
       .weight
     : "0";
   const selectedShutterName = selectedShutterId
-    ? seriesDataShutter.items.find((item) => item.id === selectedShutterId).name
+    ? seriesDataShutter?.items?.find((item) => item.id === selectedShutterId)?.name || 'Loading'
     : "Loading";
 
   const [selectedMullionSeries, setSelectedMullionSeries] = useState(null);
@@ -1023,7 +1023,7 @@ function Editquotees() {
       .weight
     : "0";
   const selectedMullionName = selectedMullionId
-    ? seriesDataMullion.items.find((item) => item.id === selectedMullionId).name
+    ? seriesDataMullion?.items?.find((item) => item.id === selectedMullionId)?.name || 'Loading'
     : "Loading";
 
   const [selectedBeedingSeries, setSelectedBeedingSeries] = useState(null);
@@ -1063,7 +1063,7 @@ function Editquotees() {
       .weight
     : "0";
   const selectedBeedingName = selectedBeedingId
-    ? seriesDataBeeding.items.find((item) => item.id === selectedBeedingId).name
+    ? seriesDataBeeding?.items?.find((item) => item.id === selectedBeedingId)?.name || 'Loading'
     : "Loading";
 
   const [selectedPanelSeries, setSelectedPanelSeries] = useState(null);
@@ -1091,16 +1091,16 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedPanelSeries);
   const selectedPanelPrice = selectedPanelId
-    ? seriesDataPanel.items.find((item) => item.id === selectedPanelId).price
+    ? seriesDataPanel?.items?.find((item) => item.id === selectedPanelId)?.price || '0'
     : 0;
   const selectedPanelLength = selectedPanelId
-    ? seriesDataPanel.items.find((item) => item.id === selectedPanelId).length
+    ? seriesDataPanel?.items?.find((item) => item.id === selectedPanelId)?.length || '0'
     : 0;
   const selectedPanelWeight = selectedPanelId
-    ? seriesDataPanel.items.find((item) => item.id === selectedPanelId).weight
+    ? seriesDataPanel?.items?.find((item) => item.id === selectedPanelId)?.weight || '0'
     : 0;
   const selectedPanelName = selectedPanelId
-    ? seriesDataPanel.items.find((item) => item.id === selectedPanelId).name
+    ? seriesDataPanel?.items?.find((item) => item.id === selectedPanelId)?.name || 'Loading'
     : "Loading";
 
   //-------------------cost--------------------------//
@@ -2960,7 +2960,7 @@ function Editquotees() {
                     
                               <select class="mb-3 form-select-select item-line w-75" value={selectedFrameId || ''} onChange={handleFrameIdChange}>
                                 {selectedFrameSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series First</option>)}
-                                {selectedFrameSeries && seriesDataFrame.items.map((item) => (
+                                {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame.items.map((item) => (
                                   <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                 ))}
                               </select>

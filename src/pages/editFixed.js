@@ -443,10 +443,10 @@ const App = () => {
   });
 
   const seriesDataFrame = profileData && profileData.find(serieses => serieses.series === selectedFrameSeries);
-  const selectedFramePrice = selectedFrameId ? seriesDataFrame.items.find(item => item.id === selectedFrameId).price : '0';
-  const selectedFrameLength = selectedFrameId ? seriesDataFrame.items.find(item => item.id === selectedFrameId).length : '0';
-  const selectedFrameWeight = selectedFrameId ? seriesDataFrame.items.find(item => item.id === selectedFrameId).weight : '0';
-  const selectedFrameName = selectedFrameId ? seriesDataFrame.items.find(item => item.id === selectedFrameId).name : 'Loading';
+  const selectedFramePrice = selectedFrameId ? seriesDataFrame?.items?.find(item => item.id === selectedFrameId)?.price || '0' : '0';
+  const selectedFrameLength = selectedFrameId ? seriesDataFrame?.items?.find(item => item.id === selectedFrameId)?.length || '0' : '0';
+  const selectedFrameWeight = selectedFrameId ? seriesDataFrame?.items?.find(item => item.id === selectedFrameId)?.weight || '0' : '0';
+  const selectedFrameName = selectedFrameId ? seriesDataFrame?.items?.find(item => item.id === selectedFrameId)?.name || 'Loading' : 'Loading';
 
 
   const [selectedMullionSeries, setSelectedMullionSeries] = useState(null);
@@ -472,10 +472,10 @@ const App = () => {
   });
 
   const seriesDataMullion = profileData && profileData.find(serieses => serieses.series === selectedMullionSeries);
-  const selectedMullionPrice = selectedMullionId ? seriesDataMullion.items.find(item => item.id === selectedMullionId).price : '0';
-  const selectedMullionLength = selectedMullionId ? seriesDataMullion.items.find(item => item.id === selectedMullionId).length : '0';
-  const selectedMullionWeight = selectedMullionId ? seriesDataMullion.items.find(item => item.id === selectedMullionId).weight : '0';
-  const selectedMullionName = selectedMullionId ? seriesDataMullion.items.find(item => item.id === selectedMullionId).name : "Loading";
+  const selectedMullionPrice = selectedMullionId ? seriesDataMullion?.items?.find(item => item.id === selectedMullionId)?.price || '0' : '0';
+  const selectedMullionLength = selectedMullionId ? seriesDataMullion?.items?.find(item => item.id === selectedMullionId)?.length || '0' : '0';
+  const selectedMullionWeight = selectedMullionId ? seriesDataMullion?.items?.find(item => item.id === selectedMullionId)?.weight || '0' : '0';
+  const selectedMullionName = selectedMullionId ? seriesDataMullion?.items?.find(item => item.id === selectedMullionId)?.name || 'Loading' : "Loading";
 
  const handleMullionSeriesChange = (event) => {
      const seriesId = event.target.value;
@@ -505,10 +505,10 @@ const App = () => {
   });
 
   const seriesDataBeeding = profileData && profileData.find(serieses => serieses.series === selectedBeedingSeries);
-  const selectedBeedingPrice = selectedBeedingId ? seriesDataBeeding.items.find(item => item.id === selectedBeedingId).price : '0';
-  const selectedBeedingLength = selectedBeedingId ? seriesDataBeeding.items.find(item => item.id === selectedBeedingId).length : '0';
-  const selectedBeedingWeight = selectedBeedingId ? seriesDataBeeding.items.find(item => item.id === selectedBeedingId).weight : '0';
-  const selectedBeedingName = selectedBeedingId ? seriesDataBeeding.items.find(item => item.id === selectedBeedingId).name : 'Loading';
+  const selectedBeedingPrice = selectedBeedingId ? seriesDataBeeding?.items?.find(item => item.id === selectedBeedingId)?.price || '0' : '0';
+  const selectedBeedingLength = selectedBeedingId ? seriesDataBeeding?.items?.find(item => item.id === selectedBeedingId)?.length || '0' : '0';
+  const selectedBeedingWeight = selectedBeedingId ? seriesDataBeeding?.items?.find(item => item.id === selectedBeedingId)?.weight || '0' : '0';
+  const selectedBeedingName = selectedBeedingId ? seriesDataBeeding?.items?.find(item => item.id === selectedBeedingId)?.name || 'Loading' : 'Loading';
 
   const [selectedLBeedingSeries, setSelectedLBeedingSeries] = useState(null);
   const [selectedLBeedingId, setSelectedLBeedingId] = useState(null);
@@ -525,10 +525,10 @@ const App = () => {
   };
 
   const seriesDataLBeeding = profileData && profileData.find(serieses => serieses.series === selectedLBeedingSeries);
-  const selectedLBeedingPrice = selectedLBeedingId ? seriesDataLBeeding.items.find(item => item.id === selectedLBeedingId).price : '0';
-  const selectedLBeedingLength = selectedLBeedingId ? seriesDataLBeeding.items.find(item => item.id === selectedLBeedingId).length : '0';
-  const selectedLBeedingWeight = selectedLBeedingId ? seriesDataLBeeding.items.find(item => item.id === selectedLBeedingId).weight : '0';
-  const selectedLBeedingName = selectedLBeedingId ? seriesDataLBeeding.items.find(item => item.id === selectedLBeedingId).name : 'Loading';
+  const selectedLBeedingPrice = selectedLBeedingId ? seriesDataLBeeding?.items?.find(item => item.id === selectedLBeedingId)?.price || '0' : '0';
+  const selectedLBeedingLength = selectedLBeedingId ? seriesDataLBeeding?.items?.find(item => item.id === selectedLBeedingId)?.length || '0' : '0';
+  const selectedLBeedingWeight = selectedLBeedingId ? seriesDataLBeeding?.items?.find(item => item.id === selectedLBeedingId)?.weight || '0' : '0';
+  const selectedLBeedingName = selectedLBeedingId ? seriesDataLBeeding?.items?.find(item => item.id === selectedLBeedingId)?.name || 'Loading' : 'Loading';
 
 
 
@@ -1517,7 +1517,7 @@ const App = () => {
                         </select>
                         <select class="mb-3 form-select-select item-line w-75" value={selectedFrameId || ''} onChange={handleFrameIdChange}>
                           {selectedFrameSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                            {selectedFrameSeries && seriesDataFrame.items.map((item) => (
+                            {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame.items.map((item) => (
                               <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                           ))}
                         </select>
