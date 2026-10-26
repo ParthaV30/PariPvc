@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Paginator } from 'primereact/paginator';
 import Navbar from "./navbar";
 import Header from "./header";
+import { getClients } from '../services/dbService';
 import './box.css';
 ReactSession.setStoreType("localStorage");
 
@@ -53,9 +54,9 @@ const App = () => {
 
 
   const filteredData = clients.filter(item => 
-    (searchQuery === '' || item.clientName.toLowerCase().includes(searchQuery.toLowerCase())) &&
-    (searchQuery2 === '' || item.clientPhone.toLowerCase().includes(searchQuery2.toLowerCase())) &&
-    (searchQuery3 === '' || item.clientLocation.toLowerCase().includes(searchQuery3.toLowerCase()))
+    (searchQuery === '' || (item.clientName || item.name || '').toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (searchQuery2 === '' || (item.clientPhone || item.phone || '').toLowerCase().includes(searchQuery2.toLowerCase())) &&
+    (searchQuery3 === '' || (item.clientLocation || item.location || '').toLowerCase().includes(searchQuery3.toLowerCase()))
   );
 
 
@@ -68,21 +69,34 @@ const App = () => {
   };
   
 
-  const clietData = async () =>{
+  const clietData = async () => {
     try {
-      const response = await axios.post('https://upvcapi.sninfoserv.com/clients/', 
-        {user:users});
-      
-      if(response.data.status === 'success'){
+      const list = await getClients(users);
+      if (Array.isArray(list) && list.length > 0) {
+        const mapped = list.map(c => ({
+          ...c,
+          clientName: c.clientName || c.name || '',
+          clientPhone: c.clientPhone || c.phone || '',
+          clientLocation: c.clientLocation || c.location || '',
+          clientSitelocation: c.clientSitelocation || c.sitelocation || '',
+          clientEngineer: c.clientEngineer || c.engineer || '',
+          clientRequire: c.clientRequire || c.require || ''
+        }));
+        setClients(mapped);
+        return;
+      }
+      const response = await axios.post('https://upvcapi.sninfoserv.com/clients/', { user: users });
+      if (response.data && response.data.status === 'success') {
         setClients(response.data.data);
-       // console.log(response.data.data);
       }
     } catch (error) {
-      console.error('Error sending data:', error);
+      console.error('Error fetching clients:', error);
     }
   };
 
-  useEffect(()=>{clietData(); },[clients]);
+  useEffect(() => {
+    clietData();
+  }, []);
 
   const removeclient = async (clientId) => {
     fetchDatalog(clientId);

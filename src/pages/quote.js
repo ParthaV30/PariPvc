@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Paginator } from 'primereact/paginator';
 import Navbar from "./navbar";
 import Header from "./header";
+import { getQuotes } from '../services/dbService';
 
  function Quote() {
     const userId = ReactSession.get("upvcuserId");
@@ -64,10 +65,28 @@ import Header from "./header";
 
     const fetchData = async () => {
       try {
+        const list = await getQuotes(users);
+        if (Array.isArray(list) && list.length > 0) {
+          const mapped = list.map(q => ({
+            ...q,
+            date: q.created_at ? new Date(q.created_at).toLocaleDateString() : (q.date || ''),
+            cusQuoteId: q.cusQuoteId || q.quote_id || '',
+            quoteId: q.quote_id || q.id || '',
+            items: Array.isArray(q.items) ? q.items.length : (q.items || 1),
+            client: {
+              name: q.client_name || q.client?.name || 'Customer',
+              location: q.location || q.site_location || q.client?.location || ''
+            }
+          }));
+          setData(mapped);
+          return;
+        }
         const response = await axios.post('https://upvcapi.sninfoserv.com/all-quotes/', user);
-        setData(response.data);
+        if (response.data && Array.isArray(response.data)) {
+          setData(response.data);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching quotes:", error);
       }
     };
      

@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import Navbar from "./navbar";
 import Header from "./header";
+import { getClients, addClient, saveQuote } from '../services/dbService';
 import './box.css';
 ReactSession.setStoreType("localStorage");
 
@@ -62,37 +63,60 @@ const App = () => {
     }
   };
 
-  const clietData = async () =>{
+  const clietData = async () => {
     try {
-      const response = await axios.post('https://upvcapi.sninfoserv.com/clients/', {user: users} );
-      //console.log(response.data);
-      if(response.data.status === 'success'){
-        setClients(response.data.data);
+      const list = await getClients(users);
+      if (Array.isArray(list)) {
+        setClients(list);
       }
-    } catch (error) {
-      console.error('Error sending data:', error);
+    } catch (e) {
+      console.error('Error loading clients:', e);
     }
   };
 
-  useEffect(()=>{clietData(); },[clients]);
+  useEffect(() => {
+    clietData();
+  }, []);
 
   const handleSubmit = async (e) => {
-    fetchDatalog();
-    const uniqueId = generateUniqueId();
-    ReactSession.set("upvcquoteId",uniqueId);
     e.preventDefault();
+    const uniqueId = generateUniqueId();
+    ReactSession.set("upvcquoteId", uniqueId);
+
+    // Save to Supabase (or fallback to local storage)
     try {
-      const response = await axios.post('https://upvcapi.sninfoserv.com/new-quotes/',{ 
-       userId: users, uniqueId, values
+      await saveQuote({
+        uniqueId,
+        userId: users,
+        name: values.name,
+        phone: values.phone,
+        location: values.location,
+        sitelocation: values.sitelocation,
+        engineer: values.engineer,
+        values
       });
-     // console.log('Response:', response.data);
-      if(response.data.status === 'success'){
-        navigate(selectpath);
+
+      if (values.name) {
+        await addClient({
+          name: values.name,
+          phone: values.phone,
+          location: values.location,
+          sitelocation: values.sitelocation,
+          engineer: values.engineer,
+          require: values.require,
+          userId: users
+        });
       }
-    } catch (error) {
-      console.error('Error sending data:', error);
-      // Handle error as needed, such as showing an error message to the user
+    } catch (err) {
+      console.warn('Quote save error:', err);
     }
+
+    try { fetchDatalog(); } catch (err) {}
+    try {
+      axios.post('https://upvcapi.sninfoserv.com/new-quotes/', { userId: users, uniqueId, values }).catch(() => {});
+    } catch (err) {}
+
+    navigate(selectpath);
   };
   
 

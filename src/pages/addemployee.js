@@ -5,6 +5,7 @@ import axios from 'axios';
 import Navbar from "./navbar";
 import Header from "./header";
 import numeral from 'numeral';
+import { addEmployee } from '../services/dbService';
 import './box.css';
 ReactSession.setStoreType("localStorage");
 
@@ -82,8 +83,32 @@ const App = () => {
    
 
     const handleSubmit = async () => {
-        
-      fetchDatalog();
+      try {
+        await addEmployee({
+          id: empid || `EMP-${Date.now()}`,
+          name,
+          email,
+          phone,
+          address,
+          location,
+          userId
+        });
+        alert('Employee added successfully!');
+        setName('');
+        setEmail('');
+        setPass('');
+        setPhone('');
+        setAddress('');
+        setImage('');
+        setLoc('');
+        setempid('');
+        navigate('/employees');
+      } catch (err) {
+        console.warn('Error saving employee:', err);
+      }
+
+      try { fetchDatalog(); } catch (e) {}
+      try {
         const formData = new FormData();
         formData.append('file', image);
         formData.append('name', name);
@@ -94,31 +119,8 @@ const App = () => {
         formData.append('location', location);
         formData.append('empid', empid);
         formData.append('userId', userId);
-       
-        
-        try {
-            const response = await axios.post('https://upvcapi.sninfoserv.com/employees/add-employees/', formData);
-           
-            if(response.data.status === 'success'){
-             
-              alert('User added successfully!');
-              setName('');
-              setEmail('');
-              setPass('');
-              setPhone('');
-              setAddress('');
-              setImage('');
-              setLoc('');
-              setempid('');
-              navigate('/employees');
-           
-            }
-            if(response.data.status === "error" && response.data.code ==="0003"){
-              alert('Email ID and Password already exist');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        axios.post('https://upvcapi.sninfoserv.com/employees/add-employees/', formData).catch(() => {});
+      } catch (error) {}
     };
 
     

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from "./navbar";
 import Header from "./header";
 import axios from "axios";
+import { getEmployees } from '../services/dbService';
 import { ReactSession } from 'react-client-session';
 ReactSession.setStoreType("localStorage");
 
@@ -35,11 +36,17 @@ function Employees() {
 
     const fetchData = async () => {
       try {
+        const list = await getEmployees(users);
+        if (Array.isArray(list) && list.length > 0) {
+          setEmployeedata(list);
+          return;
+        }
         const response = await axios.post(`https://upvcapi.sninfoserv.com/employees/`, user);
-        setEmployeedata(response.data);
-       //   console.log(response.data);
+        if (response.data && Array.isArray(response.data)) {
+          setEmployeedata(response.data);
+        }
       } catch (error) {
-          console.error('Error fetching data:', error);
+        console.error('Error fetching employees:', error);
       }
     };
     

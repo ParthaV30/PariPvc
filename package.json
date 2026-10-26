@@ -7,6 +7,7 @@
     "@ckeditor/ckeditor5-build-classic": "^38.1.1",
     "@ckeditor/ckeditor5-react": "^6.0.0",
     "@react-pdf/renderer": "^3.1.12",
+    "@supabase/supabase-js": "^2.118.0",
     "ajv": "^8.8.2",
     "axios": "^1.4.0",
     "html2canvas": "^1.4.1",
