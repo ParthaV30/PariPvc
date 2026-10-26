@@ -5,6 +5,7 @@ import Header from "./header";
 import axios from "axios";
 import { ReactSession } from 'react-client-session';
 import numeral from 'numeral';
+import { getQuotes, getClients, deleteQuote } from '../services/dbService';
 
 ReactSession.setStoreType("localStorage");
 
@@ -44,46 +45,83 @@ function Account() {
   
  
     const fetchData = async () => {
-        try {
-          const response = await axios.post(`https://upvcapi.sninfoserv.com/all-quotes/`, user);
+      try {
+        const list = await getQuotes(users);
+        if (Array.isArray(list) && list.length > 0) {
+          const mapped = list.map(q => ({
+            ...q,
+            cusQuoteId: q.cusQuoteId || q.quote_id || '',
+            quoteId: q.quote_id || q.id || '',
+            date: q.created_at ? new Date(q.created_at).toLocaleDateString() : (q.date || ''),
+            items: Array.isArray(q.items) ? q.items.length : 0,
+            quoteDetails: (q.items || []).map((it, idx) => ({
+              id: it.id || idx,
+              rowId: it.rowId || it.id || idx,
+              quoteData: it.quoteData || it.data || it
+            })),
+            client: {
+              name: q.client_name || q.client?.name || 'Customer',
+              number: q.phone || q.client?.number || q.client?.phone || '',
+              location: q.location || q.site_location || q.client?.location || ''
+            }
+          }));
+          setQuoteData({ data: mapped });
+          return;
+        }
+        const response = await axios.post(`https://upvcapi.sninfoserv.com/all-quotes/`, user);
+        if (response.data) {
           setQuoteData(response.data);
-        //  console.log(response.data);
-         
-        } catch (error) {
-          console.error('Error fetching data:', error);
         }
-      };
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-      const clietData = async () =>{
-        try {
-          const response = await axios.post('https://upvcapi.sninfoserv.com/clients/', 
-            {user:users});
-          //  console.log(response.data);
-          if(response.data.status === 'success'){
-           const filteredclientsdetail = response.data.data.filter(client => client.clientPhone === quoteIds);
-          //  console.log(filteredclientsdetail);
-           setClients(filteredclientsdetail);
-           // console.log(response.data);
-          }
-        } catch (error) {
-          console.error('Error sending data:', error);
+    const clietData = async () => {
+      try {
+        const list = await getClients(users);
+        if (Array.isArray(list) && list.length > 0) {
+          const filtered = list.filter(client => (
+            String(client.clientPhone || client.phone || '') === String(quoteIds || '') ||
+            String(client.clientId || client.id || '') === String(quoteIds || '')
+          ));
+          const mapped = filtered.map(c => ({
+            ...c,
+            clientName: c.clientName || c.name || '',
+            clientPhone: c.clientPhone || c.phone || '',
+            clientLocation: c.clientLocation || c.location || ''
+          }));
+          setClients(mapped);
+          return;
         }
-      };
-      useEffect(()=>{clietData(); },[clients]);
-
-
-
-      const removequote = async (quoteID) => {
-        fetchDatalog(quoteID);
-        try {
-          const response = await axios.post(`https://upvcapi.sninfoserv.com/quote-delete/`, {quoteId: quoteID});
-          if(response.data.status === 'success'){
-            fetchData();
-          }
-        } catch (error) {
-            console.error('Error fetching data:', error);
+        const response = await axios.post('https://upvcapi.sninfoserv.com/clients/', { user: users });
+        if (response.data && response.data.status === 'success') {
+          const filteredclientsdetail = response.data.data.filter(client => client.clientPhone === quoteIds);
+          setClients(filteredclientsdetail);
         }
-      };
+      } catch (error) {
+        console.error('Error sending data:', error);
+      }
+    };
+
+    useEffect(() => {
+      clietData();
+    }, [quoteIds]);
+
+    const removequote = async (quoteID) => {
+      try { fetchDatalog(quoteID); } catch(e) {}
+      try {
+        await deleteQuote(quoteID);
+        await fetchData();
+      } catch (error) {
+        console.error('Error deleting quote:', error);
+      }
+      try {
+        await axios.post(`https://upvcapi.sninfoserv.com/quote-delete/`, { quoteId: quoteID });
+      } catch (error) {
+        // offline fallback
+      }
+    };
     
       useEffect(() => {
         fetchData();
@@ -176,7 +214,7 @@ function Account() {
                             <td><a href={`quotesdet?id=${quote.quoteId}`} class="btn btn-primary">View Quote</a></td>
                             <td>
                    
-                             <a onClick={() => removequote(quote.quoteId)} ><i class="btn btn-danger ti ti-trash"></i></a>
+                             <a onClick={() => removequote(quote.quoteId)} style={{ cursor: "pointer" }}><i class="btn btn-danger ti ti-trash"></i></a>
                             </td>
                           </tr>
                         ))}

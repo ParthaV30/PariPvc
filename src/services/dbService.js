@@ -74,14 +74,21 @@ export async function addClient(clientData) {
 }
 
 export async function deleteClient(clientId) {
+  const targetId = String(clientId || '');
+  if (!targetId) return false;
   if (isSupabaseConfigured()) {
     try {
-      await supabase.from('clients').delete().eq('id', clientId);
+      await supabase.from('clients').delete().or(`id.eq.${targetId},phone.eq.${targetId}`);
     } catch (e) {
       console.warn('Supabase deleteClient error:', e);
     }
   }
-  const list = getLS(LS_CLIENTS_KEY).filter((c) => c.id !== clientId && c.clientId !== clientId);
+  const list = getLS(LS_CLIENTS_KEY).filter((c) => {
+    const id = String(c.id || '');
+    const cid = String(c.clientId || '');
+    const phone = String(c.phone || '');
+    return id !== targetId && cid !== targetId && phone !== targetId;
+  });
   setLS(LS_CLIENTS_KEY, list);
   return true;
 }
@@ -134,7 +141,7 @@ export async function saveQuote(quoteData) {
     total_amount: quoteData.total_amount || 0,
     status: quoteData.status || 'Active',
     user_id: quoteData.userId || '1',
-    created_at: new Date().toISOString()
+    created_at: quoteData.created_at || new Date().toISOString()
   };
 
   if (isSupabaseConfigured()) {
@@ -161,14 +168,21 @@ export async function saveQuote(quoteData) {
 }
 
 export async function deleteQuote(quoteId) {
+  const targetId = String(quoteId || '');
+  if (!targetId) return false;
   if (isSupabaseConfigured()) {
     try {
-      await supabase.from('quotes').delete().eq('quote_id', quoteId);
+      await supabase.from('quotes').delete().or(`quote_id.eq.${targetId},id.eq.${targetId}`);
     } catch (e) {
       console.warn('Supabase deleteQuote error:', e);
     }
   }
-  const quotes = getLS(LS_QUOTES_KEY).filter((q) => q.quote_id !== quoteId && q.id !== quoteId);
+  const quotes = getLS(LS_QUOTES_KEY).filter((q) => {
+    const qid = String(q.quote_id || '');
+    const id = String(q.id || '');
+    const uid = String(q.uniqueId || '');
+    return qid !== targetId && id !== targetId && uid !== targetId;
+  });
   setLS(LS_QUOTES_KEY, quotes);
   return true;
 }
@@ -271,14 +285,21 @@ export async function saveInvoice(invoiceData) {
 }
 
 export async function deleteEmployee(empId) {
+  const targetId = String(empId || '');
+  if (!targetId) return false;
   if (isSupabaseConfigured()) {
     try {
-      await supabase.from('employees').delete().eq('id', empId);
+      await supabase.from('employees').delete().or(`id.eq.${targetId},user_id.eq.${targetId}`);
     } catch (e) {
       console.warn('Supabase deleteEmployee error:', e);
     }
   }
-  const emps = getLS(LS_EMPLOYEES_KEY).filter((e) => e.id !== empId && e.user_id !== empId);
+  const emps = getLS(LS_EMPLOYEES_KEY).filter((e) => {
+    const id = String(e.id || '');
+    const uid = String(e.user_id || '');
+    const eid = String(e.emp_id || '');
+    return id !== targetId && uid !== targetId && eid !== targetId;
+  });
   setLS(LS_EMPLOYEES_KEY, emps);
   return true;
 }
@@ -372,12 +393,16 @@ export async function deleteQuoteItem(quoteId, itemIndexOrId) {
   const currentQuote = await getQuoteById(quoteId);
   if (!currentQuote || !Array.isArray(currentQuote.items)) return false;
 
-  let newItems = [];
-  if (typeof itemIndexOrId === 'number') {
-    newItems = currentQuote.items.filter((_, idx) => idx !== itemIndexOrId);
-  } else {
-    newItems = currentQuote.items.filter(it => it.id !== itemIndexOrId);
-  }
+  const targetStr = itemIndexOrId !== undefined && itemIndexOrId !== null ? String(itemIndexOrId) : null;
+  const isNumeric = targetStr !== null && !isNaN(Number(targetStr)) && targetStr.trim() !== '';
+  const numIdx = isNumeric ? Number(targetStr) : -1;
+
+  let newItems = currentQuote.items.filter((it, idx) => {
+    if (targetStr && it.id && String(it.id) === targetStr) return false;
+    if (targetStr && it.rowId && String(it.rowId) === targetStr) return false;
+    if (numIdx >= 0 && idx === numIdx) return false;
+    return true;
+  });
 
   currentQuote.items = newItems;
   let newTotal = 0;

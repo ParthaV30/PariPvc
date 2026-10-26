@@ -148,7 +148,6 @@ function Quotesdet({ quotes }) {
     try { fetchDatalog(quoteIds, detailIndex); } catch (e) {}
     try {
       await deleteQuoteItem(quoteIds, detailIndex);
-      alert("Item deleted successfully");
       await fetchData();
     } catch (err) {
       console.warn("deleteQuoteItem error:", err);
@@ -180,7 +179,8 @@ function Quotesdet({ quotes }) {
             siteLocation: quote.site_location || ''
           },
           quoteDetails: (quote.items || []).map((it, idx) => ({
-            id: it.id || idx,
+            id: it.id || `ITEM-${idx}`,
+            rowId: it.rowId || it.id || idx,
             quoteData: it.quoteData || it.data || it
           }))
         };
@@ -1578,7 +1578,7 @@ function Quotesdet({ quotes }) {
             </div>
 
             {filteredQuotes?.map((quote, index) =>
-              quote.quoteDetails.map((detail, detailIndex) => (
+              (quote.quoteDetails || []).map((detail, detailIndex) => (
                 <>
                   <div class="col-md-12 col-xxl-12 col-xl-12">
                     <div class="card" style={{ background: "#fff" }}>
@@ -13367,9 +13367,10 @@ function Quotesdet({ quotes }) {
 
                               <a
                                 onClick={() =>
-                                  removequote(quoteIds, detail.rowId)
+                                  removequote(quoteIds, detail.rowId !== undefined ? detail.rowId : (detail.id !== undefined ? detail.id : detailIndex))
                                 }
                                 class="btn btn-danger"
+                                style={{ cursor: "pointer" }}
                               >
                                 {" "}
                                 <i class="text-white ti ti-trash"></i>

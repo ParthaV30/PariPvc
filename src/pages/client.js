@@ -75,6 +75,7 @@ const App = () => {
       if (Array.isArray(list) && list.length > 0) {
         const mapped = list.map(c => ({
           ...c,
+          clientId: c.clientId || c.id || c.phone || '',
           clientName: c.clientName || c.name || '',
           clientPhone: c.clientPhone || c.phone || '',
           clientLocation: c.clientLocation || c.location || '',
@@ -184,7 +185,7 @@ const App = () => {
                   <td class="text-wrap">{client.clientLocation}</td>
                   <td><a href={`clientsdetails?id=${client.clientPhone}`} class="btn btn-primary">View</a></td>
                   <td>
-                    <a onClick={() => removeclient(client.clientId)} ><i class="btn btn-danger ti ti-trash"></i></a>
+                    <a onClick={() => removeclient(client.clientId || client.id || client.clientPhone)} style={{ cursor: "pointer" }}><i class="btn btn-danger ti ti-trash"></i></a>
                    </td>
                 </tr>
                 ))} </>
@@ -200,7 +201,7 @@ const App = () => {
                   <td class="text-wrap">{client.clientLocation}</td>
                   <td><a href={`clientsdetails?id=${client.clientPhone}`} class="btn btn-primary">View</a></td>
                   <td>
-                    <a onClick={() => removeclient(client.clientId)} ><i class="btn btn-danger ti ti-trash"></i></a>
+                    <a onClick={() => removeclient(client.clientId || client.id || client.clientPhone)} style={{ cursor: "pointer" }}><i class="btn btn-danger ti ti-trash"></i></a>
                    </td>
                 </tr>
               ))}
