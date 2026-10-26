@@ -54,6 +54,10 @@ const Navbar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setIsMobileSidebarActive(false);
+  }, [location.pathname]);
+
   //console.log(userLimit, usersub);
 
   let users = '';
@@ -165,13 +169,26 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`${savedSideBar} ${isMobileSidebarActive ? 'mob-sidebar-active pc-sidebar' : 'pc-sidebar'}`}>
-        <div className={`${isMobileSidebarActive ? 'pc-menu-overlay' : ''}`} >
-          {isMobileSidebarActive && (
-            <button onClick={handleSidebarClick} style={{ float: 'right', top: '10px', right: '10px', background: 'transparent', border: 'none', color: theme === 'dark' ? '#fff' : '#000', fontSize: '24px', margin: '20px 20px 0px 0px', fontWeight: '600', zIndex: '999' }}>x</button>
-          )}
-        </div>
-        <div class="navbar-wrapper">
+      {isMobileSidebarActive && (
+        <div
+          className="pc-menu-overlay"
+          onClick={handleSidebarClick}
+          aria-hidden="true"
+        />
+      )}
+      <nav className={`pc-sidebar ${savedSideBar} ${isMobileSidebarActive ? 'mob-sidebar-active' : ''}`}>
+        {isMobileSidebarActive && (
+          <div className="d-flex d-lg-none justify-content-between align-items-center px-4 py-3 border-bottom">
+            <span className="fw-bold fs-6">Pari & Co UPVC</span>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={handleSidebarClick}
+              aria-label="Close"
+            ></button>
+          </div>
+        )}
+        <div className="navbar-wrapper">
 
           <div class="navbar-content">
             <div class="card pc-user-card">
