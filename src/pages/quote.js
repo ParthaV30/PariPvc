@@ -1,0 +1,240 @@
+import React, { useEffect, useState } from 'react';
+import { ReactSession } from 'react-client-session';
+import axios from 'axios';
+import { Paginator } from 'primereact/paginator';
+import Navbar from "./navbar";
+import Header from "./header";
+
+ function Quote() {
+    const userId = ReactSession.get("upvcuserId");
+    const userType = ReactSession.get("upvcuserType");
+    const [quoteData, setData] =useState('');
+    const Empid = ReactSession.get("upvcempid");
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery2, setSearchQuery2] = useState('');
+    const [searchQuery3, setSearchQuery3] = useState('');
+    const [searchQuery5, setSearchQuery5] = useState('');
+    const [Invoicedata, setInvoicedata] = useState('');
+    const [matchedQuotes, setMatchedQuotes] = useState([]);
+
+    const handleSearchInputChangeID = (e) => setSearchQuery(e.target.value);
+    const handleSearchInputChangeName = (e) => setSearchQuery2(e.target.value);
+    const handleSearchInputChangedate = (e) => setSearchQuery3(e.target.value);
+    const handleSearchInputChangeLocation = (e) => setSearchQuery5(e.target.value);
+
+    const [first, setFirst] = useState(0); 
+    const [rows, setRows] = useState(5);
+      
+    const onPageChange = (event) => {
+      setFirst(event.first);
+    };
+
+    let users='';
+    if (userType === '3') {
+      users =  Empid ;
+    } else {
+      users = userId ;
+    }
+    const user = { "userId": users };
+
+
+    const startDateObj = searchQuery3 ? new Date(searchQuery3) : null;
+    if (startDateObj) {
+      startDateObj.setHours(0, 0, 0, 0); 
+    }
+  
+    const filteredData = quoteData?.data?.filter(item => {
+      const itemDate = new Date(item.date.split('-').reverse().join('-'));
+      return (
+        searchQuery2 === '' || (item.client?.name?.toLowerCase()?.includes(searchQuery2.toLowerCase())) &&
+        (startDateObj ? itemDate >= startDateObj : true) && 
+        searchQuery === '' || item.cusQuoteId.toString().includes(searchQuery)&&
+        (searchQuery5 === '' || (item.client?.location?.toLowerCase()?.includes(searchQuery5.toLowerCase()) ?? false))
+      );
+    });
+    
+    const fetchDatalog = async (quoteID) => {
+      try {
+        const response = await axios.post(`https://upvcapi.sninfoserv.com/log/`, {"removequote":quoteID});
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('https://upvcapi.sninfoserv.com/all-quotes/', user);
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+     
+    useEffect(() => {
+      fetchData();
+    }, []);
+
+
+    const InvoiceData = async () => {
+      try {
+        const response = await axios.get('https://upvcapi.sninfoserv.com/invoice/', {
+          params: { user: userId }
+        });
+        setInvoicedata(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    useEffect(() => {
+      InvoiceData();
+    }, []);
+
+    useEffect(() => {
+      if (!Invoicedata || !Invoicedata.data || !quoteData || !quoteData.data) {
+        console.error("Invoicedata or quoteData is undefined.");
+        return; // Exit early if the data is not available
+      }
+
+      const matches = []; // Array to hold all matched quotes
+
+      Invoicedata.data.forEach(invoice => {
+        const invoiceQuoteID = invoice.quoteID;
+        const matchedQuotes = quoteData.data.filter(quote => quote.quoteId === invoiceQuoteID); // Use filter to find all matches
+
+        if(matchedQuotes.length > 0) {
+          matchedQuotes.forEach(matchedQuote => {
+            matches.push({ invoiceId: invoice.invoice_id, matchedQuote });
+          });
+        }else{
+       // console.log('No matching quote found for Invoice ID:', invoice.invoice_id);
+        }
+      });
+
+      setMatchedQuotes(matches); // Store all matched quotes in state
+    }, [Invoicedata, quoteData]);
+
+    const removequote = async (quoteID) => {
+      fetchDatalog(quoteID);
+      try {
+        const response = await axios.post(`https://upvcapi.sninfoserv.com/quote-delete/`, {userId, quoteId: quoteID});
+        if(response.data.status === 'success'){
+          fetchData();
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+ 
+    // console.log(matchedQuotes);
+
+    return (
+      <div>
+        <Navbar />
+        <Header />
+          <div class="pc-container">
+            <div class="pc-content">
+              <div class="row">
+                <div class="col-md-12 col-xxl-12 col-xl-12">
+                  <div class="card">
+                    <div class="card-header ">
+                      <h5>Quote</h5>
+                    </div>
+                    <div class="card-body">
+                        <div className="row" >
+                          <div className="col-md-6   col-lg-3 ml-2 mt-5">
+                            <input
+                              type="date"
+                              className="form-control"
+                              placeholder="Search by user Date..."
+                              value={searchQuery3}
+                              onChange={handleSearchInputChangedate}
+                            />
+                          </div>
+          
+                          <div className="col-md-6  col-lg-3 ml-2 mt-5">
+                            <input
+                              type="number"
+                              className="form-control"
+                              placeholder="Search by user ID..."
+                              value={searchQuery}
+                              onChange={handleSearchInputChangeID}
+                            />
+                          </div>
+
+                          <div className="col-md-6  col-lg-3 ml-2 mt-5">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Search by user name..."
+                              value={searchQuery2}
+                              onChange={handleSearchInputChangeName}
+                            />
+                          </div>
+                        
+                          <div className="col-md-6  col-lg-3 ml-2 mt-5">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Search by user location..."
+                              value={searchQuery5}
+                              onChange={handleSearchInputChangeLocation}
+                            />
+                          </div>
+                       
+                          <div className="col-md-12 col-lg-12 mt-5">
+                            <div class="table-responsive"> 
+                              <table id="left-right-fix" class="table stripe row-border order-column" width="100%">
+                                <thead>
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Quote ID</th>
+                                    <th>Items</th>
+                                    <th>Client</th>
+                                    <th>Location</th>
+                                    <th colspan="2">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {filteredData?.length > 0 ? filteredData?.slice(first, first + rows).reverse().slice().reverse().map((quotes, index) => 
+                                    <tr key={index}>
+                                      <td>{quotes.date}</td>
+                                      <td>{quotes.cusQuoteId}</td>
+                                      <td>{quotes.items}</td>
+                                      <td>{quotes.client.name}</td>
+                                      <td class="text-wrap">{quotes.client.location}</td>
+                                      <td><a href={`quotesdet?id=${quotes.quoteId}`} class="btn btn-primary w-120" >View Quotes</a></td>
+                                      <td>
+                                        { 
+                                          matchedQuotes.some(match => match.matchedQuote.quoteId === quotes.quoteId) ?
+                                          <></>
+                                          : 
+                                          <a onClick={() => removequote(quotes.quoteId)}>
+                                            <i className="btn btn-danger ti ti-trash"></i>
+                                          </a> 
+                                        }
+
+                                      </td>
+                                    </tr>
+                                  ):(
+                                    <tr>
+                                      <td class="text-center" colspan='6'>No Data Found</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
+                              <Paginator className="custom-paginator" first={first} rows={rows} totalRecords={filteredData?.length}  onPageChange={onPageChange} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+  )
+}
+export default Quote;

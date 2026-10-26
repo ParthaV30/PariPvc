@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Pari and Co - UPVC App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Pari and Co UPVC App is made to simplify the process of making quote for everyone and also for the cutting schedule.">
+  <meta name="keywords" content="upvc, quote, windows, door, casement, sliding, arch, pari and co, upvc windows, cutting schedule">
+  <meta name="author" content="Pari and Co">
+  <link rel="icon" href="%PUBLIC_URL%/assets/images/pari-logo.png" type="image/png">
+  <link rel="stylesheet" href="%PUBLIC_URL%/assets/fonts/inter/inter.css" id="main-font-link">
+  <!-- Tabler Icons Webfont CDN for 100% complete icon rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="%PUBLIC_URL%/assets/fonts/phosphor/duotone/style.css">
+  <link rel="stylesheet" href="%PUBLIC_URL%/assets/fonts/feather.css">
+  <link rel="stylesheet" href="%PUBLIC_URL%/assets/fonts/material.css">
+  <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/style.css" id="main-style-link">
+  <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/style-preset.css">
+</head>
+<body oncontextmenu="handleContextMenu(event)" data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script src="%PUBLIC_URL%/assets/js/plugins/apexcharts.min.js"></script>
+  <script src="%PUBLIC_URL%/assets/js/plugins/popper.min.js"></script>
+  <script src="%PUBLIC_URL%/assets/js/plugins/simplebar.min.js"></script>
+  <script src="%PUBLIC_URL%/assets/js/plugins/bootstrap.min.js"></script>
+  <script src="%PUBLIC_URL%/assets/js/fonts/custom-font.js"></script>
+  <script src="%PUBLIC_URL%/assets/js/pcoded.js"></script>
+  <script src="%PUBLIC_URL%/assets/js/plugins/feather.min.js"></script>
+  <script>
+    if (typeof layout_change === 'function') layout_change("light");
+    if (typeof change_box_container === 'function') change_box_container("false");
+    if (typeof layout_caption_change === 'function') layout_caption_change("true");
+    if (typeof layout_rtl_change === 'function') layout_rtl_change("false");
+    if (typeof preset_change === 'function') preset_change("preset-1");
+    if (typeof main_layout_change === 'function') main_layout_change("vertical");
+    function handleContextMenu(e){ e.preventDefault(); }
+  </script>
+</body>
+</html>

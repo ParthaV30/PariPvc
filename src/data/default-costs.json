@@ -1,0 +1,967 @@
+{
+  "costId": "23",
+  "costData": {
+    "fan": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Fan 1",
+        "value": "25"
+      },
+      {
+        "label": "Fan 2",
+        "value": "30"
+      },
+      {
+        "label": "Fan 3",
+        "value": "35"
+      },
+      {
+        "label": "Fan 4",
+        "value": "40"
+      },
+      {
+        "label": "Fan 5",
+        "value": "45"
+      }
+    ],
+    "mesh": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Mesh 1",
+        "value": "5.5"
+      },
+      {
+        "label": "Mesh 2",
+        "value": "6"
+      },
+      {
+        "label": "Mesh 3",
+        "value": "6.1"
+      },
+      {
+        "label": "Mesh 4",
+        "value": "6.5"
+      },
+      {
+        "label": "Mesh 5",
+        "value": "7"
+      }
+    ],
+    "blades": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Blade 1",
+        "value": "3"
+      },
+      {
+        "label": "Blade 2",
+        "value": "4"
+      },
+      {
+        "label": "Blade 3",
+        "value": "5"
+      },
+      {
+        "label": "Blade 4",
+        "value": "6"
+      },
+      {
+        "label": "Blade 5",
+        "value": "7"
+      }
+    ],
+    "meshGasket": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Mesh Gasket 1",
+        "value": "0"
+      },
+      {
+        "label": "Mesh Gasket 2",
+        "value": "2"
+      },
+      {
+        "label": "Mesh Gasket 3",
+        "value": "3"
+      },
+      {
+        "label": "Mesh Gasket 4",
+        "value": "4"
+      },
+      {
+        "label": "Mesh Gasket 5",
+        "value": "5"
+      }
+    ],
+    "profileGasket": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Gasket 1",
+        "value": "0"
+      },
+      {
+        "label": "Gasket 2",
+        "value": "2"
+      },
+      {
+        "label": "Gasket 3",
+        "value": "3"
+      },
+      {
+        "label": "Gasket 4",
+        "value": "4"
+      },
+      {
+        "label": "Gasket 5",
+        "value": "5"
+      }
+    ],
+    "steel": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Steel 1",
+        "value": "10"
+      },
+      {
+        "label": "Steel 2",
+        "value": "15"
+      },
+      {
+        "label": "Steel 3",
+        "value": "20"
+      },
+      {
+        "label": "Steel 4",
+        "value": "30"
+      },
+      {
+        "label": "Steel 5",
+        "value": "40"
+      }
+    ],
+    "wastage": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Wastage 1",
+        "value": "1"
+      },
+      {
+        "label": "Wastage 2",
+        "value": "2"
+      },
+      {
+        "label": "Wastage 3",
+        "value": "3"
+      },
+      {
+        "label": "Wastage 4",
+        "value": "4"
+      },
+      {
+        "label": "Wastage 5",
+        "value": "5"
+      }
+    ],
+    "screws": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Screws 1",
+        "value": ".65"
+      },
+      {
+        "label": "Screws 2",
+        "value": "1"
+      },
+      {
+        "label": "Screws 3",
+        "value": "2"
+      },
+      {
+        "label": "Screws 4",
+        "value": "3"
+      },
+      {
+        "label": "Screws 5",
+        "value": "4"
+      }
+    ],
+    "marketing": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Marketing 1",
+        "value": "38"
+      },
+      {
+        "label": "Marketing 2",
+        "value": "30"
+      },
+      {
+        "label": "Marketing 3",
+        "value": "20"
+      },
+      {
+        "label": "Marketing 4",
+        "value": "10"
+      },
+      {
+        "label": "Marketing 5",
+        "value": "0"
+      }
+    ],
+    "transport": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Transportation 1",
+        "value": "10"
+      },
+      {
+        "label": "Transportation 2",
+        "value": "8"
+      },
+      {
+        "label": "Transportation 3",
+        "value": "6"
+      },
+      {
+        "label": "Transportation 4",
+        "value": "4"
+      },
+      {
+        "label": "Transportation 5",
+        "value": "2"
+      }
+    ],
+    "labourSite": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Labour Site 1",
+        "value": "25"
+      },
+      {
+        "label": "Labour Site 2",
+        "value": "23"
+      },
+      {
+        "label": "Labour Site 3",
+        "value": "40"
+      },
+      {
+        "label": "Labour Site 4",
+        "value": "20"
+      },
+      {
+        "label": "Labour Site 5",
+        "value": "10"
+      }
+    ],
+    "labourFactory": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Labour Factory 1",
+        "value": "25"
+      },
+      {
+        "label": "Labour Factory 2",
+        "value": "25"
+      },
+      {
+        "label": "Labour Factory 3",
+        "value": "40"
+      },
+      {
+        "label": "Labour Factory 4",
+        "value": "20"
+      },
+      {
+        "label": "Labour Factory 5",
+        "value": "15"
+      }
+    ],
+    "glass": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "pinhead",
+        "value": "45"
+      },
+      {
+        "label": "5mm",
+        "value": "100"
+      },
+      {
+        "label": "6mm",
+        "value": "70"
+      },
+      {
+        "label": "8mm",
+        "value": "45"
+      },
+      {
+        "label": "10mm",
+        "value": "40"
+      }
+    ],
+    "margin": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Margin 1",
+        "value": "80"
+      },
+      {
+        "label": "Margin 2",
+        "value": "50"
+      },
+      {
+        "label": "Margin 3",
+        "value": "40"
+      },
+      {
+        "label": "Margin 4",
+        "value": "30"
+      },
+      {
+        "label": "Margin 5",
+        "value": "20"
+      }
+    ],
+    "alTrack": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Track 1",
+        "value": "6.88"
+      },
+      {
+        "label": "Track 2",
+        "value": "8.3"
+      },
+      {
+        "label": "Track 3",
+        "value": "15"
+      },
+      {
+        "label": "Track 4",
+        "value": "20"
+      },
+      {
+        "label": "Track 5",
+        "value": "0"
+      }
+    ],
+    "gRoll": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Roller 1",
+        "value": "8.26"
+      },
+      {
+        "label": "Roller 2",
+        "value": "9"
+      },
+      {
+        "label": "Roller 3",
+        "value": "7"
+      },
+      {
+        "label": "Roller 4",
+        "value": "20"
+      },
+      {
+        "label": "Roller 5",
+        "value": "90"
+      }
+    ],
+    "meshRoll": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Roller 1",
+        "value": "8"
+      },
+      {
+        "label": "Roller 2",
+        "value": "10"
+      },
+      {
+        "label": "Roller 3",
+        "value": "12"
+      },
+      {
+        "label": "Roller 4",
+        "value": "14"
+      },
+      {
+        "label": "Roller 5",
+        "value": "16"
+      }
+    ],
+    "wStrip": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Strip 1",
+        "value": "0.68"
+      },
+      {
+        "label": "Strip 2",
+        "value": "0.79"
+      },
+      {
+        "label": "Strip 3",
+        "value": "0.88"
+      },
+      {
+        "label": "Strip 4",
+        "value": "0.6"
+      },
+      {
+        "label": "Strip 5",
+        "value": "0.64"
+      }
+    ],
+    "handle": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Handle 1",
+        "value": "76"
+      },
+      {
+        "label": "Handle 2",
+        "value": "75"
+      },
+      {
+        "label": "Handle 3",
+        "value": "600"
+      },
+      {
+        "label": "Handle 4",
+        "value": "600"
+      },
+      {
+        "label": "Handle 5",
+        "value": "50"
+      }
+    ],
+    "bArrestor": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Arrestor 1",
+        "value": "6"
+      },
+      {
+        "label": "Arrestor 2",
+        "value": "8"
+      },
+      {
+        "label": "Arrestor 3",
+        "value": "10"
+      },
+      {
+        "label": "Arrestor 4",
+        "value": "12"
+      },
+      {
+        "label": "Arrestor 5",
+        "value": "14"
+      }
+    ],
+    "dArrestor": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Arrestor 1",
+        "value": "4.5"
+      },
+      {
+        "label": "Arrestor 2",
+        "value": "8"
+      },
+      {
+        "label": "Arrestor 3",
+        "value": "12"
+      },
+      {
+        "label": "Arrestor 4",
+        "value": "16"
+      },
+      {
+        "label": "Arrestor 5",
+        "value": "0"
+      }
+    ],
+    "jStopper": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Jump Stopper 1",
+        "value": "8"
+      },
+      {
+        "label": "Jump Stopper 2",
+        "value": "8"
+      },
+      {
+        "label": "Jump Stopper 3",
+        "value": "6"
+      },
+      {
+        "label": "Jump Stopper 4",
+        "value": "4"
+      },
+      {
+        "label": "Jump Stopper 5",
+        "value": "1"
+      }
+    ],
+    "board": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Board 1",
+        "value": "120"
+      },
+      {
+        "label": "Board 2",
+        "value": "90"
+      },
+      {
+        "label": "Board 3",
+        "value": "40"
+      },
+      {
+        "label": "Board 4",
+        "value": "50"
+      },
+      {
+        "label": "Board 5",
+        "value": "60"
+      }
+    ],
+    "grill": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Grill 1",
+        "value": "150"
+      },
+      {
+        "label": " Grill 2",
+        "value": "180"
+      },
+      {
+        "label": "Grill 3",
+        "value": "200"
+      },
+      {
+        "label": "Grill 4",
+        "value": "250"
+      },
+      {
+        "label": "Grill 5",
+        "value": "300"
+      }
+    ],
+    "meshJA": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Arrestor 1",
+        "value": "5"
+      },
+      {
+        "label": "Arrestor 2",
+        "value": "0"
+      },
+      {
+        "label": "Arrestor 3",
+        "value": "0"
+      },
+      {
+        "label": "Arrestor 4",
+        "value": "10"
+      },
+      {
+        "label": "Arrestor 5",
+        "value": "0"
+      }
+    ],
+    "doorStopper": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Stopper 1",
+        "value": "5"
+      },
+      {
+        "label": "Stopper 2",
+        "value": "0"
+      },
+      {
+        "label": "Stopper 3",
+        "value": "9"
+      },
+      {
+        "label": "Stopper 4",
+        "value": "0"
+      },
+      {
+        "label": "Stopper 5",
+        "value": "0"
+      }
+    ],
+    "adjRoll": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Roller 1",
+        "value": "0"
+      },
+      {
+        "label": "Roller 2",
+        "value": "6"
+      },
+      {
+        "label": "Roller 3",
+        "value": "0"
+      },
+      {
+        "label": "Roller 4",
+        "value": "8"
+      },
+      {
+        "label": "Roller 5",
+        "value": "0"
+      }
+    ],
+    "touchLock": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Touch Lock 1",
+        "value": "50"
+      },
+      {
+        "label": "Touch Lock 2",
+        "value": "0"
+      },
+      {
+        "label": "Touch Lock 3",
+        "value": "220"
+      },
+      {
+        "label": "Touch Lock 4",
+        "value": "0"
+      },
+      {
+        "label": "Touch Lock 5",
+        "value": "0"
+      }
+    ],
+    "frictionStay": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Friction Stay 1",
+        "value": "82.60"
+      },
+      {
+        "label": "Friction Stay 2",
+        "value": "89"
+      },
+      {
+        "label": "Friction Stay 3",
+        "value": "104.50"
+      },
+      {
+        "label": "Friction Stay 4",
+        "value": "6"
+      },
+      {
+        "label": "Friction Stay 5",
+        "value": "0"
+      }
+    ],
+    "espag": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Espag 1",
+        "value": "155.76"
+      },
+      {
+        "label": "Espag 2",
+        "value": "167.56"
+      },
+      {
+        "label": "Espag 3",
+        "value": "179.36"
+      },
+      {
+        "label": "Espag 4",
+        "value": "212.40"
+      },
+      {
+        "label": "Espag 5",
+        "value": "220"
+      }
+    ],
+    "securityClip": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Security Clip 1",
+        "value": "11"
+      },
+      {
+        "label": "Security Clip 2",
+        "value": "0"
+      },
+      {
+        "label": "Security Clip 3",
+        "value": "44"
+      },
+      {
+        "label": "Security Clip 4",
+        "value": "0"
+      },
+      {
+        "label": "Security Clip 5",
+        "value": "0"
+      }
+    ],
+    "runnerBlock": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Runner Block 1",
+        "value": "22"
+      },
+      {
+        "label": "Runner Block 2",
+        "value": "0"
+      },
+      {
+        "label": "Runner Block 3",
+        "value": "0"
+      },
+      {
+        "label": "Runner Block 4",
+        "value": "0"
+      },
+      {
+        "label": "Runner Block 5",
+        "value": "66"
+      }
+    ],
+    "mullionClamp": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Mullion Clamp 1",
+        "value": "9"
+      },
+      {
+        "label": "Mullion Clamp 2",
+        "value": "0"
+      },
+      {
+        "label": "Mullion Clamp 3",
+        "value": "21"
+      },
+      {
+        "label": "Mullion Clamp 4",
+        "value": "0"
+      },
+      {
+        "label": "Mullion Clamp 5",
+        "value": "13"
+      }
+    ],
+    "tdHinges": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "3D Hinges 1",
+        "value": "500"
+      },
+      {
+        "label": "3D Hinges 2",
+        "value": "260"
+      },
+      {
+        "label": "3D Hinges 3",
+        "value": "280"
+      },
+      {
+        "label": "3D Hinges 4",
+        "value": "75"
+      },
+      {
+        "label": "3D Hinges 5",
+        "value": "85"
+      }
+    ],
+    "espagm": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Espag Multi-Lock 1",
+        "value": "220"
+      },
+      {
+        "label": "Espag Multi-Lock 2",
+        "value": "0"
+      },
+      {
+        "label": "Espag Multi-Lock 3",
+        "value": "330"
+      },
+      {
+        "label": "Espag Multi-Lock 4",
+        "value": "0"
+      },
+      {
+        "label": "Espag Multi-Lock 5",
+        "value": "110"
+      }
+    ],
+    "casementDoorset": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "Door Set 1",
+        "value": "55"
+      },
+      {
+        "label": "Door Set 2",
+        "value": "0"
+      },
+      {
+        "label": "Door Set 3",
+        "value": "0"
+      },
+      {
+        "label": "Door Set 4",
+        "value": "0"
+      },
+      {
+        "label": "Door Set 5",
+        "value": "66"
+      }
+    ],
+    "mpl": [
+      {
+        "label": "Default",
+        "value": "0"
+      },
+      {
+        "label": "MPL 1",
+        "value": "40"
+      },
+      {
+        "label": "MPL 2",
+        "value": "30"
+      },
+      {
+        "label": "MPL 3",
+        "value": "20"
+      },
+      {
+        "label": "MPL 4",
+        "value": "10"
+      },
+      {
+        "label": "MPL 5",
+        "value": "0"
+      }
+    ]
+  }
+}

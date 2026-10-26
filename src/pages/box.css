@@ -1,0 +1,274 @@
+/* src\pages\box.css */
+.expanding-arrow-line {
+  display: flex;
+  align-items: center;
+  position: relative;
+  top:'-300px';
+  float:'left';
+}
+
+.line {
+  height: 1px; /* Adjust this value as needed */
+  background-color: black; /* Adjust line color */
+  flex-grow: 1;
+}
+
+.arrow-left,
+.arrow-right {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent; /* Adjust arrow size */
+  border-bottom: 5px solid transparent; /* Adjust arrow size */
+  position: absolute;
+}
+
+.arrow-left {
+  border-right: 3px solid black; /* Adjust arrow color and size */
+  left: 0;
+}
+
+.arrow-right {
+  border-left: 3px solid black; /* Adjust arrow color and size */
+  right: 0;
+}
+
+.diagonal-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* Line spans the entire width of the container */
+  height: 100%; /* Line spans the entire height of the container */
+  background-color: transparent;
+  border-right: 1px solid #333; /* Adjust the line color and thickness */
+  transform-origin: top left;
+  transform: translateY(100%) rotate(-45deg);
+}
+
+p {
+  font-size: 10px;
+}
+
+@media screen and (max-width: 800px) {
+  p {
+    font-size: 8px; 
+  }
+}
+
+
+/* styles.css */
+.modal1 {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  z-index: 1000; /* Ensure the modal appears above other elements */
+}
+
+.modal1 h2 {
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.modal1 input[type="text"],
+.modal1 input[type="email"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.modal1 button {
+  padding: 8px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.modal1 button.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal1 button.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+
+.diagonal-line-left-1 {
+  position: relative;
+  top: 0;
+  left: 2px;
+ 
+  height: 1px; /* Adjust the height of the line for visibility */
+  transform-origin: top left;
+  transform: translateY(100%) rotate(10deg);
+  background-color: rgba(0, 0, 0, 0.205);
+  z-index: 2; /* Ensure the line is above the box */
+}
+.diagonal-line-left-2 {
+  position: relative;
+  top: 100%;
+  left: 2px;
+  
+  height: 1px; /* Adjust the height of the line for visibility */
+  transform-origin: bottom left;
+  transform: translateY(100%) rotate(-10deg);
+  background-color: rgba(0, 0, 0, 0.205);
+  z-index: 2; /* Ensure the line is above the box */
+}
+
+.diagonal-line-right-1 {
+  position: relative;
+  top: 0;
+  left: 2px;
+
+  height: 1px; /* Adjust the height of the line for visibility */
+  transform-origin: top right;
+  transform: translateY(100%) rotate(46deg);
+  background-color: rgba(0, 0, 0, 0.205);
+  z-index: 2; /* Ensure the line is above the box */
+}
+.diagonal-line-right-2 {
+  position: relative;
+  top: 100%;
+  left: 2px;
+  
+  height: 1px; /* Adjust the height of the line for visibility */
+  transform-origin: bottom right;
+  transform: translateY(100%) rotate(-46deg);
+  background-color: rgba(0, 0, 0, 0.205);
+  z-index: 2; /* Ensure the line is above the box */
+}
+
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Transparent black background */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Adjust as needed */
+  
+}
+
+.custom-modal .modal-dialog {
+  max-width: 50%;
+  max-height: 70vh !important;
+  /* border-radius: 0px;
+  overflow: scroll; */
+  border: 0;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%) !important;
+  border-radius: 25px;
+  background-color: #fff;
+}
+
+@media (max-width: 780px) {
+  .custom-modal .modal-dialog {
+    max-width: 80% !important;  
+  }
+}
+
+.custom-modal .modal-dialog .modal-content {
+  border-radius: 25px;
+  padding: 15px;
+  border: 1px solid #BCE3C9;
+}
+
+td, th{
+  padding: 8px;
+}
+
+.hide{
+  display: none;
+}
+
+.container-line {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.rounded-img{
+  border-radius: 15px !important;
+}
+
+
+/*className="custom-paginator"
+/* Custom Paginator Styles */
+.custom-paginator {
+  background-color: transparent; 
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Padding around the paginator */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space out elements */
+  align-items: center; /* Center items vertically */
+}
+.custom-paginator .p-paginator-page {
+  border: 1px solid #007BFF; /* Border for page buttons */
+  border-radius: 5px; /* Rounded corners for buttons */
+  padding: 8px 12px; /* Padding inside buttons */
+  color: #007BFF; /* Text color */
+  margin: 0 5px; /* Space between buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+}
+.custom-paginator .p-paginator-page:hover {
+  background-color: #007BFF; /* Background on hover */
+  color: white; /* Text color on hover */
+}
+.custom-paginator .p-paginator-prev,
+.custom-paginator .p-paginator-next {
+  background-color: #007BFF; /* Background color for prev/next buttons */
+  color: white; /* Text color for prev/next buttons */
+  border: none; /* Remove border */
+  padding: 8px 12px; /* Padding inside buttons */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+.custom-paginator .p-paginator-prev:hover,
+.custom-paginator .p-paginator-next:hover {
+  background-color: #0056B3; /* Darker blue on hover */
+}
+.custom-paginator .p-paginator-current {
+  font-weight: bold; /* Highlight the current page */
+  color: #333; /* Color for the current page */
+}
+.p-paginator-first{
+  display:none;
+}
+.p-paginator-last{
+  display:none;
+}
+
+
+.btn-width {
+  width: 100%; 
+  margin: 2px;
+}
+
+@media (min-width: 768px) {  
+  .btn-width {
+    width: 25%; 
+  }
+ 
+}

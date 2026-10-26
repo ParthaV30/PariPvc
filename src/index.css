@@ -1,0 +1,1077 @@
+/* ==========================================================================
+   UI/UX PRO MAX DESIGN SYSTEM - PARI AND CO UPVC SUITE
+   Theme: Swiss Industrial SaaS + Adaptive High-Contrast Dark Mode
+   Brand: Pari & Co (Interior & Exterior Designers)
+   Typography: Outfit (Headings) + Inter (Body/Data)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   1. COLOR TOKENS & SYSTEM VARIABLES
+   ========================================================================== */
+:root {
+  /* Light Mode Palette */
+  --color-primary: #1E3A8A;
+  --color-primary-hover: #1D4ED8;
+  --color-secondary: #2563EB;
+  --color-accent: #6366F1;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+
+  --color-background: #F8FAFC;
+  --color-card: #FFFFFF;
+  --color-card-border: #E2E8F0;
+  --color-text-main: #0F172A;
+  --color-text-muted: #64748B;
+  --color-text-light: #94A3B8;
+
+  --color-header-bg: #FFFFFF;
+  --color-sidebar-bg: #FFFFFF;
+  --color-hover-bg: #F1F5F9;
+  --color-active-bg: #EFF6FF;
+  --color-table-stripe: #F8FAFC;
+  --color-input-bg: #FFFFFF;
+  --color-input-border: #CBD5E1;
+
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  --shadow-hover: 0 16px 24px -4px rgba(30, 58, 138, 0.12), 0 6px 10px -4px rgba(30, 58, 138, 0.06);
+  --shadow-glow: 0 0 24px rgba(37, 99, 235, 0.25);
+
+  --radius-card: 16px;
+  --radius-badge: 8px;
+  --radius-btn: 10px;
+
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark Mode Palette Overrides */
+body[data-pc-theme="dark"],
+[data-pc-theme="dark"] {
+  --color-primary: #3B82F6;
+  --color-primary-hover: #60A5FA;
+  --color-secondary: #60A5FA;
+  --color-accent: #818CF8;
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+  --color-danger: #F87171;
+
+  --color-background: #0B1120;
+  --color-card: #151F32;
+  --color-card-border: #1E293B;
+  --color-text-main: #F8FAFC;
+  --color-text-muted: #94A3B8;
+  --color-text-light: #64748B;
+
+  --color-header-bg: #0F172A;
+  --color-sidebar-bg: #0F172A;
+  --color-hover-bg: #1E293B;
+  --color-active-bg: rgba(37, 99, 235, 0.2);
+  --color-table-stripe: #121B2B;
+  --color-input-bg: #1E293B;
+  --color-input-border: #334155;
+
+  --shadow-card: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 16px 28px -4px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================================
+   2. GLOBAL BASE STYLES
+   ========================================================================== */
+html, body {
+  background-color: var(--color-background) !important;
+  color: var(--color-text-main) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-smooth), color var(--transition-smooth);
+}
+
+h1, h2, h3, h4, h5, h6, .card-title {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--color-text-main) !important;
+}
+
+p, span, label, small {
+  color: inherit;
+}
+
+.pc-container {
+  background: var(--color-background) !important;
+  min-height: 100vh;
+  transition: background-color var(--transition-smooth);
+}
+
+/* ==========================================================================
+   3. TOP NAVIGATION HEADER & ALIGNMENTS
+   ========================================================================== */
+.pc-header {
+  background: var(--color-header-bg) !important;
+  border-bottom: 1px solid var(--color-card-border) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  height: 70px !important;
+  display: flex !important;
+  align-items: center !important;
+  z-index: 1020 !important;
+  transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+}
+
+.pc-header .header-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  width: 100% !important;
+  padding: 0 24px !important;
+}
+
+.pc-header ul {
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  gap: 8px !important;
+}
+
+.pc-header .pc-h-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+.pc-header .pc-head-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 10px !important;
+  padding: 0 !important;
+  color: var(--color-text-main) !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  transition: all var(--transition-fast) !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+.pc-header .pc-head-link:hover {
+  background: var(--color-hover-bg) !important;
+  color: var(--color-secondary) !important;
+  border-color: var(--color-card-border) !important;
+}
+
+.pc-header .pc-head-link i {
+  font-size: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Hide duplicate collapse buttons on respective viewport sizes */
+@media (min-width: 1025px) {
+  .pc-header .pc-sidebar-popup {
+    display: none !important;
+  }
+}
+@media (max-width: 1024px) {
+  .pc-header .pc-sidebar-collapse {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   4. SIDEBAR NAVIGATION & BRAND ALIGNMENT
+   ========================================================================== */
+.pc-sidebar {
+  background: var(--color-sidebar-bg) !important;
+  border-right: 1px solid var(--color-card-border) !important;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.04) !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  z-index: 1025 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: all var(--transition-smooth);
+}
+
+.pc-sidebar .navbar-wrapper {
+  background: var(--color-sidebar-bg) !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.pc-sidebar .navbar-content {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+}
+
+/* Sidebar Brand Header */
+.pc-brand-header {
+  padding: 16px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  border-bottom: 1px solid var(--color-card-border) !important;
+  background: var(--color-sidebar-bg) !important;
+  flex-shrink: 0 !important;
+}
+
+.pc-brand-header a:hover {
+  opacity: 0.95;
+}
+
+/* Sidebar User Info Card */
+.pc-sidebar .pc-user-card {
+  background: var(--color-hover-bg) !important;
+  border: 1px solid var(--color-card-border) !important;
+  border-radius: 12px !important;
+  margin: 14px 16px !important;
+}
+
+.pc-sidebar .pc-user-card h6 {
+  color: var(--color-text-main) !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+.pc-sidebar .pc-user-card small {
+  color: var(--color-text-muted) !important;
+  font-weight: 600 !important;
+}
+
+/* Sidebar Section Caption */
+.pc-sidebar .pc-navbar > .pc-caption {
+  padding: 14px 20px 6px 20px !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-caption label {
+  color: var(--color-text-muted) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  display: block !important;
+}
+
+/* Navigation Links */
+.pc-sidebar .pc-navbar > .pc-item {
+  margin: 2px 12px !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item > .pc-link {
+  color: var(--color-text-main) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: all var(--transition-fast) !important;
+  text-decoration: none !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item > .pc-link .pc-mtext {
+  color: var(--color-text-main) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  transition: color var(--transition-fast) !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item > .pc-link .pc-micon {
+  margin-right: 12px !important;
+  width: 22px !important;
+  height: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--color-secondary) !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item > .pc-link .pc-micon svg.pc-icon {
+  width: 20px !important;
+  height: 20px !important;
+  fill: currentColor !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item > .pc-link:hover {
+  background: var(--color-hover-bg) !important;
+  color: var(--color-secondary) !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item > .pc-link:hover .pc-mtext {
+  color: var(--color-secondary) !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item.active > .pc-link {
+  background: var(--color-active-bg) !important;
+  border-left: 3px solid var(--color-secondary) !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item.active > .pc-link .pc-mtext {
+  color: var(--color-secondary) !important;
+  font-weight: 700 !important;
+}
+
+/* Submenu Links */
+.pc-sidebar .pc-submenu .pc-item .pc-link {
+  color: var(--color-text-muted) !important;
+  font-size: 13px !important;
+  padding: 8px 14px 8px 46px !important;
+  border-radius: 8px !important;
+  display: block !important;
+}
+
+.pc-sidebar .pc-submenu .pc-item .pc-link:hover,
+.pc-sidebar .pc-submenu .pc-item.active .pc-link {
+  color: var(--color-secondary) !important;
+  background: var(--color-hover-bg) !important;
+  font-weight: 600 !important;
+}
+
+/* User collapsible dropdown items */
+.pc-user-links a {
+  color: var(--color-text-main) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-decoration: none !important;
+}
+
+.pc-user-links a:hover {
+  background: var(--color-hover-bg) !important;
+  color: var(--color-secondary) !important;
+}
+
+/* ==========================================================================
+   5. CARDS & HERO BANNER
+   ========================================================================== */
+.card {
+  border: 1px solid var(--color-card-border) !important;
+  border-radius: var(--radius-card) !important;
+  background: var(--color-card) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.pari-hero-banner {
+  background: linear-gradient(135deg, #0A1128 0%, #1E3A8A 50%, #2563EB 100%) !important;
+  border-radius: 20px !important;
+  color: #ffffff !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 32px -10px rgba(30, 58, 138, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+body[data-pc-theme="dark"] .pari-hero-banner {
+  background: linear-gradient(135deg, #050B18 0%, #0F1D3C 45%, #1E3A8A 100%) !important;
+  border: 1px solid rgba(59, 130, 246, 0.25) !important;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6) !important;
+}
+
+.pari-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #93C5FD;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pari-hero-title {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  line-height: 1.2 !important;
+  margin-bottom: 12px !important;
+}
+
+.pari-hero-desc {
+  color: #E2E8F0 !important;
+  font-size: 14.5px !important;
+  line-height: 1.6 !important;
+  max-width: 540px !important;
+  margin-bottom: 22px !important;
+}
+
+.btn-hero-primary {
+  background: #ffffff !important;
+  color: #1E3A8A !important;
+  font-weight: 700 !important;
+  font-size: 14.5px !important;
+  padding: 11px 22px !important;
+  border-radius: var(--radius-btn) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+}
+
+.btn-hero-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.25);
+  background: #F8FAFC !important;
+  color: #1D4ED8 !important;
+}
+
+.btn-hero-ghost {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  font-weight: 600 !important;
+  font-size: 14.5px !important;
+  padding: 11px 20px !important;
+  border-radius: var(--radius-btn) !important;
+  backdrop-filter: blur(8px);
+  display: inline-flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+}
+
+.btn-hero-ghost:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   6. STAT CARDS (ALIGNMENTS & HIGH CONTRAST)
+   ========================================================================== */
+.pro-stat-card {
+  position: relative !important;
+  border-radius: var(--radius-card) !important;
+  padding: 22px 24px !important;
+  background: var(--color-card) !important;
+  border: 1px solid var(--color-card-border) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: all var(--transition-smooth) !important;
+  cursor: pointer !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  min-height: 145px !important;
+}
+
+.pro-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover) !important;
+  border-color: var(--color-secondary) !important;
+}
+
+.pro-stat-card .pro-stat-icon-wrapper {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 22px !important;
+  margin-bottom: 0 !important;
+  transition: transform var(--transition-smooth) !important;
+}
+
+.pro-stat-card:hover .pro-stat-icon-wrapper {
+  transform: scale(1.08);
+}
+
+.pro-stat-value {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 30px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  color: var(--color-text-main) !important;
+  margin: 10px 0 4px 0 !important;
+  letter-spacing: -0.03em !important;
+}
+
+.pro-stat-label {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--color-text-muted) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.pro-stat-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  margin-top: 8px !important;
+}
+
+/* Dark Mode Tint Adjustments for Stat Cards */
+body[data-pc-theme="dark"] .pro-stat-card:nth-child(1) .pro-stat-icon-wrapper {
+  background: rgba(37, 99, 235, 0.2) !important;
+  color: #60A5FA !important;
+}
+body[data-pc-theme="dark"] .pro-stat-card:nth-child(1) .pro-stat-badge {
+  background: rgba(37, 99, 235, 0.15) !important;
+  color: #93C5FD !important;
+}
+
+/* ==========================================================================
+   7. PRODUCT QUICK LAUNCH CARDS (PERFECT GRID ALIGNMENT)
+   ========================================================================== */
+.pro-product-card {
+  background: var(--color-card) !important;
+  border: 1px solid var(--color-card-border) !important;
+  border-radius: 14px !important;
+  padding: 18px 14px !important;
+  text-align: center !important;
+  transition: all var(--transition-smooth) !important;
+  cursor: pointer !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+  min-height: 155px !important;
+  text-decoration: none !important;
+}
+
+.pro-product-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-secondary) !important;
+  box-shadow: var(--shadow-hover) !important;
+}
+
+.pro-product-thumb {
+  width: 64px !important;
+  height: 64px !important;
+  margin: 0 auto 10px auto !important;
+  border-radius: 12px !important;
+  background: var(--color-hover-bg) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 6px !important;
+  transition: transform var(--transition-smooth) !important;
+}
+
+.pro-product-card:hover .pro-product-thumb {
+  transform: scale(1.08);
+}
+
+.pro-product-title {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  color: var(--color-text-main) !important;
+  margin-bottom: 2px !important;
+}
+
+.pro-product-sub {
+  font-size: 12px !important;
+  color: var(--color-text-muted) !important;
+}
+
+body[data-pc-theme="dark"] .pro-product-thumb {
+  background: #1E293B !important;
+}
+
+/* ==========================================================================
+   8. DATA TABLE (LIGHT & DARK ADAPTIVE)
+   ========================================================================== */
+.pro-table-wrapper {
+  background: var(--color-card) !important;
+  border: 1px solid var(--color-card-border) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+  overflow: hidden !important;
+}
+
+.pro-table-header {
+  padding: 18px 24px !important;
+  border-bottom: 1px solid var(--color-card-border) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.pro-table {
+  width: 100% !important;
+  margin-bottom: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.pro-table th {
+  background-color: var(--color-table-stripe) !important;
+  color: var(--color-text-muted) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 14px 20px !important;
+  border-bottom: 1px solid var(--color-card-border) !important;
+  vertical-align: middle !important;
+}
+
+.pro-table td {
+  padding: 16px 20px !important;
+  vertical-align: middle !important;
+  font-size: 14px !important;
+  color: var(--color-text-main) !important;
+  border-bottom: 1px solid var(--color-card-border) !important;
+  transition: background-color var(--transition-fast) !important;
+}
+
+.pro-table tr:hover td {
+  background-color: var(--color-hover-bg) !important;
+}
+
+.pro-badge-quote {
+  background: rgba(37, 99, 235, 0.12) !important;
+  color: var(--color-secondary) !important;
+  font-weight: 700 !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  font-family: 'Outfit', sans-serif !important;
+  letter-spacing: 0.02em !important;
+  font-size: 12.5px !important;
+  border: 1px solid rgba(37, 99, 235, 0.25) !important;
+  display: inline-block !important;
+}
+
+.btn-view-quote {
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 7px 16px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  text-decoration: none !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.btn-view-quote:hover {
+  background: var(--color-secondary) !important;
+  transform: translateY(-1px);
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   9. BOOTSTRAP / PCODED DARK MODE COMPREHENSIVE FIXES
+   ========================================================================== */
+body[data-pc-theme="dark"] .form-control,
+body[data-pc-theme="dark"] input,
+body[data-pc-theme="dark"] select,
+body[data-pc-theme="dark"] textarea {
+  background-color: var(--color-input-bg) !important;
+  border-color: var(--color-input-border) !important;
+  color: var(--color-text-main) !important;
+}
+
+body[data-pc-theme="dark"] .form-control:focus {
+  border-color: var(--color-secondary) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25) !important;
+}
+
+body[data-pc-theme="dark"] .dropdown-menu {
+  background-color: var(--color-card) !important;
+  border-color: var(--color-card-border) !important;
+}
+
+body[data-pc-theme="dark"] .dropdown-item {
+  color: var(--color-text-main) !important;
+}
+
+body[data-pc-theme="dark"] .dropdown-item:hover {
+  background-color: var(--color-hover-bg) !important;
+  color: var(--color-secondary) !important;
+}
+
+body[data-pc-theme="dark"] .modal-content {
+  background-color: var(--color-card) !important;
+  border-color: var(--color-card-border) !important;
+  color: var(--color-text-main) !important;
+}
+
+body[data-pc-theme="dark"] .modal-header,
+body[data-pc-theme="dark"] .modal-footer {
+  border-color: var(--color-card-border) !important;
+}
+
+body[data-pc-theme="dark"] .offcanvas {
+  background-color: var(--color-header-bg) !important;
+  color: var(--color-text-main) !important;
+  border-color: var(--color-card-border) !important;
+}
+
+body[data-pc-theme="dark"] .offcanvas-header {
+  border-bottom-color: var(--color-card-border) !important;
+}
+
+body[data-pc-theme="dark"] .btn-outline-secondary {
+  color: #CBD5E1 !important;
+  border-color: #475569 !important;
+  background-color: transparent !important;
+}
+
+body[data-pc-theme="dark"] .btn-outline-secondary:hover {
+  background-color: #1E293B !important;
+  color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   10. SCROLLBARS & UTILITIES
+   ========================================================================== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-card-border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Tabler icons exact rendering */
+i.ti, [class^="ti ti-"], [class*=" ti ti-"] {
+  font-family: 'tabler-icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   11. COMPREHENSIVE LIGHT MODE & CONTRAST FIXES
+   ========================================================================== */
+
+/* Welcome / Hero Banner in both Light and Dark mode */
+.welcome-banner,
+.welcome-banner.bg-blue-800,
+.card.welcome-banner,
+.pari-hero-banner {
+  background: linear-gradient(135deg, #0A1128 0%, #1E3A8A 50%, #2563EB 100%) !important;
+  border-radius: 20px !important;
+  color: #ffffff !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 32px -10px rgba(30, 58, 138, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.welcome-banner h2,
+.welcome-banner h3,
+.welcome-banner h4,
+.welcome-banner h5,
+.welcome-banner p,
+.welcome-banner span,
+.pari-hero-banner h2,
+.pari-hero-banner h3,
+.pari-hero-banner h4,
+.pari-hero-banner h5,
+.pari-hero-banner p,
+.pari-hero-banner span {
+  color: #ffffff !important;
+}
+
+.welcome-banner .text-white-50,
+.pari-hero-banner .text-white-50 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.welcome-banner .btn-outline-light,
+.welcome-banner a.btn-outline-light {
+  background: #ffffff !important;
+  color: #1E3A8A !important;
+  border: none !important;
+  font-weight: 700 !important;
+  padding: 10px 22px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+}
+
+.welcome-banner .btn-outline-light:hover,
+.welcome-banner a.btn-outline-light:hover {
+  background: #F8FAFC !important;
+  color: #1D4ED8 !important;
+  transform: translateY(-2px);
+}
+
+/* Light Mode Global Text & Cards */
+body[data-pc-theme="light"],
+body:not([data-pc-theme="dark"]) {
+  color: #0F172A !important;
+  background-color: #F8FAFC !important;
+}
+
+body[data-pc-theme="light"] .card,
+body:not([data-pc-theme="dark"]) .card {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+body[data-pc-theme="light"] .card h1,
+body[data-pc-theme="light"] .card h2,
+body[data-pc-theme="light"] .card h3,
+body[data-pc-theme="light"] .card h4,
+body[data-pc-theme="light"] .card h5,
+body[data-pc-theme="light"] .card h6,
+body[data-pc-theme="light"] .card-header h5,
+body[data-pc-theme="light"] .card-title,
+body:not([data-pc-theme="dark"]) .card h1,
+body:not([data-pc-theme="dark"]) .card h2,
+body:not([data-pc-theme="dark"]) .card h3,
+body:not([data-pc-theme="dark"]) .card h4,
+body:not([data-pc-theme="dark"]) .card h5,
+body:not([data-pc-theme="dark"]) .card h6,
+body:not([data-pc-theme="dark"]) .card-header h5,
+body:not([data-pc-theme="dark"]) .card-title {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+/* Calculator left control labels & paragraph text */
+body[data-pc-theme="light"] .card p,
+body[data-pc-theme="light"] .col-6 p,
+body[data-pc-theme="light"] .col-12 p,
+body:not([data-pc-theme="dark"]) .card p,
+body:not([data-pc-theme="dark"]) .col-6 p,
+body:not([data-pc-theme="dark"]) .col-12 p {
+  color: #1E293B !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-bottom: 5px !important;
+}
+
+body[data-pc-theme="dark"] .card p,
+body[data-pc-theme="dark"] .col-6 p,
+body[data-pc-theme="dark"] .col-12 p {
+  color: #E2E8F0 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-bottom: 5px !important;
+}
+
+/* Stat Card inner boxes (.bg-body) */
+body[data-pc-theme="light"] .bg-body,
+body:not([data-pc-theme="dark"]) .bg-body {
+  background-color: #F1F5F9 !important;
+  color: #0F172A !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+body[data-pc-theme="light"] .bg-body h6,
+body[data-pc-theme="light"] .bg-body h5,
+body[data-pc-theme="light"] .bg-body p,
+body[data-pc-theme="light"] .bg-body span,
+body:not([data-pc-theme="dark"]) .bg-body h6,
+body:not([data-pc-theme="dark"]) .bg-body h5,
+body:not([data-pc-theme="dark"]) .bg-body p,
+body:not([data-pc-theme="dark"]) .bg-body span {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+/* Form inputs & selects in Light Mode */
+body[data-pc-theme="light"] .form-control,
+body[data-pc-theme="light"] input,
+body[data-pc-theme="light"] select,
+body[data-pc-theme="light"] textarea,
+body:not([data-pc-theme="dark"]) .form-control,
+body:not([data-pc-theme="dark"]) input,
+body:not([data-pc-theme="dark"]) select,
+body:not([data-pc-theme="dark"]) textarea {
+  color: #0F172A !important;
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+}
+
+body[data-pc-theme="light"] .form-control::placeholder,
+body[data-pc-theme="light"] input::placeholder,
+body:not([data-pc-theme="dark"]) .form-control::placeholder,
+body:not([data-pc-theme="dark"]) input::placeholder {
+  color: #64748B !important;
+  opacity: 1 !important;
+}
+
+body[data-pc-theme="light"] .form-control:focus,
+body:not([data-pc-theme="dark"]) .form-control:focus {
+  border-color: #2563EB !important;
+  color: #0F172A !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+/* Tables in Light Mode */
+body[data-pc-theme="light"] table,
+body:not([data-pc-theme="dark"]) table {
+  color: #0F172A !important;
+}
+
+body[data-pc-theme="light"] table th,
+body:not([data-pc-theme="dark"]) table th {
+  color: #334155 !important;
+  background-color: #F8FAFC !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  font-weight: 700 !important;
+}
+
+body[data-pc-theme="light"] table td,
+body:not([data-pc-theme="dark"]) table td {
+  color: #0F172A !important;
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+/* Light mode badges */
+body[data-pc-theme="light"] .badge.bg-light,
+body:not([data-pc-theme="dark"]) .badge.bg-light {
+  background-color: #F1F5F9 !important;
+  color: #1E293B !important;
+  border: 1px solid #CBD5E1 !important;
+}
+
+/* Offcanvas & Modal text in Light Mode */
+body[data-pc-theme="light"] .offcanvas,
+body:not([data-pc-theme="dark"]) .offcanvas,
+body[data-pc-theme="light"] .modal-content,
+body:not([data-pc-theme="dark"]) .modal-content {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #E2E8F0 !important;
+}
+
+body[data-pc-theme="light"] .offcanvas-title,
+body:not([data-pc-theme="dark"]) .offcanvas-title,
+body[data-pc-theme="light"] .modal-title,
+body:not([data-pc-theme="dark"]) .modal-title {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+/* Window Canvas Dimension Lines & Labels */
+.expanding-arrow-line p,
+.expanding-arrow-line div,
+.line,
+.diagonal-line {
+  color: #0F172A !important;
+}
+
+.text-muted {
+  color: #64748B !important;
+}
+
+body[data-pc-theme="dark"] .text-muted {
+  color: #94A3B8 !important;
+}
+
+
+/* ==========================================================================
+   12. ABSOLUTE HIGH-CONTRAST WHITE TEXT OVERRIDES FOR HERO BANNER
+   ========================================================================== */
+.pari-hero-banner,
+.welcome-banner,
+.card.welcome-banner,
+.pari-hero-banner h1,
+.pari-hero-banner h2,
+.pari-hero-banner h3,
+.pari-hero-banner h4,
+.pari-hero-banner h5,
+.pari-hero-banner h6,
+.pari-hero-banner p,
+.pari-hero-banner span,
+.pari-hero-title,
+.pari-hero-desc,
+.welcome-banner h1,
+.welcome-banner h2,
+.welcome-banner h3,
+.welcome-banner h4,
+.welcome-banner h5,
+.welcome-banner h6,
+.welcome-banner p,
+.welcome-banner span,
+.welcome-banner .text-white,
+.pari-hero-banner .text-white,
+body[data-pc-theme="light"] .pari-hero-banner h2,
+body[data-pc-theme="light"] .pari-hero-banner h5,
+body[data-pc-theme="light"] .pari-hero-banner p,
+body[data-pc-theme="light"] .welcome-banner h2,
+body[data-pc-theme="light"] .welcome-banner h5,
+body[data-pc-theme="light"] .welcome-banner p,
+body[data-pc-theme="light"] .pari-hero-title,
+body[data-pc-theme="light"] .pari-hero-desc,
+body[data-pc-theme="light"] .card.welcome-banner h2,
+body[data-pc-theme="light"] .card.welcome-banner h5,
+body[data-pc-theme="light"] .card.welcome-banner p,
+body:not([data-pc-theme="dark"]) .pari-hero-banner h2,
+body:not([data-pc-theme="dark"]) .pari-hero-banner h5,
+body:not([data-pc-theme="dark"]) .pari-hero-banner p,
+body:not([data-pc-theme="dark"]) .welcome-banner h2,
+body:not([data-pc-theme="dark"]) .welcome-banner h5,
+body:not([data-pc-theme="dark"]) .welcome-banner p,
+body:not([data-pc-theme="dark"]) .pari-hero-title,
+body:not([data-pc-theme="dark"]) .pari-hero-desc,
+body:not([data-pc-theme="dark"]) .card.welcome-banner h2,
+body:not([data-pc-theme="dark"]) .card.welcome-banner h5,
+body:not([data-pc-theme="dark"]) .card.welcome-banner p {
+  color: #FFFFFF !important;
+}
+
+.pari-hero-banner .text-white-50,
+.welcome-banner .text-white-50,
+body[data-pc-theme="light"] .pari-hero-banner .text-white-50,
+body[data-pc-theme="light"] .welcome-banner .text-white-50,
+body:not([data-pc-theme="dark"]) .pari-hero-banner .text-white-50,
+body:not([data-pc-theme="dark"]) .welcome-banner .text-white-50 {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.pari-hero-badge,
+body[data-pc-theme="light"] .pari-hero-badge,
+body:not([data-pc-theme="dark"]) .pari-hero-badge {
+  color: #93C5FD !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
