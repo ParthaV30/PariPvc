@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import Navbar from "./navbar";
 import Header from "./header";
-import { getClients, addClient, saveQuote } from '../services/dbService';
+import { getClients, addClient, saveQuote, getEngineers, addEngineer } from '../services/dbService';
 import './box.css';
 ReactSession.setStoreType("localStorage");
 
@@ -17,10 +17,10 @@ const App = () => {
   const navigate = useNavigate();
   const indexPath = '/';
   const selectpath ='/select';
-  const [values, setValues] = useState({ name: '', phone:'', location: "", sitelocation: "", engineer: '', require: '',}); 
+  const [values, setValues] = useState({ name: '', phone:'', location: "", sitelocation: "", engineer: 'Er. Parthiban M', require: '',}); 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newEngineerData, setNewEngineerData] = useState({ name: '', phone: '', email: '', location: '',});
-  const [engDetails, setengData] = useState(true);
+  const [engDetails, setengData] = useState({ data: [] });
 
   const [clients, setClients] = useState([]);
   const Empid = ReactSession.get("upvcempid");
@@ -31,8 +31,6 @@ const App = () => {
     users = userId ;
   }
   const user = { "userId": users };
-//  console.log(users);
-//  console.log(userType);
 
   useEffect(() => {
     if (userId == 0 ) {
@@ -48,18 +46,18 @@ const App = () => {
     const hour = now.getHours().toString().padStart(2, '0');
     const minute = now.getMinutes().toString().padStart(2, '0');
     const second = now.getSeconds().toString().padStart(2, '0');
-    const id = `${userId}-${year}${month}${day}-${hour}${minute}${second}`;
+    const id = `${userId || '1'}-${year}${month}${day}-${hour}${minute}${second}`;
     return id;
   }
 
   const fetchDatalog = async () => {
     const uniqueId = generateUniqueId();
     try {
-      const response = await axios.post(`https://upvcapi.sninfoserv.com/log/`,{ 
+      await axios.post(`https://upvcapi.sninfoserv.com/log/`, { 
         userId, userIds: users, uniqueId, values, newEngineerData
-       });
+      });
     } catch (error) {
-      console.error('Error fetching data:', error);
+      // offline fallback
     }
   };
 
@@ -74,8 +72,24 @@ const App = () => {
     }
   };
 
+  const fetchEngineers = async () => {
+    try {
+      const list = await getEngineers(users);
+      if (Array.isArray(list) && list.length > 0) {
+        setengData({ data: list });
+        setValues((prev) => ({
+          ...prev,
+          engineer: prev.engineer || list[0].engineerName
+        }));
+      }
+    } catch (e) {
+      console.warn('Error loading engineers:', e);
+    }
+  };
+
   useEffect(() => {
     clietData();
+    fetchEngineers();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -127,37 +141,18 @@ const App = () => {
   
 
   const handleAddEngineer = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     try {
-      const response = await axios.post('https://upvcapi.sninfoserv.com/new-engineer/', { 
-        userId: users, newEngineerData
-      });
-     // console.log('Response:', response.data);
-      if(response.data.status === 'success'){
-        setModalIsOpen(false);
-        fetchData();
+      if (newEngineerData.name) {
+        const added = await addEngineer({ ...newEngineerData, userId: users });
+        setValues((prev) => ({ ...prev, engineer: added.engineerName || newEngineerData.name }));
+        await fetchEngineers();
       }
     } catch (error) {
-      console.error('Error sending data:', error);
-      // Handle error as needed, such as showing an error message to the user
+      console.error('Error adding engineer:', error);
     }
-   // console.log('Adding new engineer:', newEngineerData);
-    setModalIsOpen(false); // Close the modal after adding engineer
+    setModalIsOpen(false);
   };
-  
-  
-  const fetchData = async () => {
-    try {
-      const response = await axios.post('https://upvcapi.sninfoserv.com/engineers/', user);
-      setengData(response.data);
-      //console.log(response.data);
-    } catch (error) {
-    } 
-};
-
-useEffect(() => {
-  fetchData();
-}, [engDetails]);
   
 const handleChange = (event) => {
   const { name, value } = event.target;
@@ -229,17 +224,15 @@ const handleChange = (event) => {
                 <div class="col-md-3 col-xl-3 col-xxl-3 col-12 mt-2">    
                       <label class="form-label" for="exampleFormControlSelect1">Select Engineers</label>
                       <select class="form-select" id="exampleFormControlSelect1" name="engineer" value={values.engineer} onChange={handleChange} required >
-                      <option value="" disabled hidden>Select an Engineer</option>
-                      <option class="btn btn-success text-center" value="" onClick={() => setModalIsOpen(true)}>Add Engineer</option>
-                         {engDetails && engDetails.data ? 
-                           ( engDetails.data.slice().reverse().map(engineer => (<>
-                             <option key={engineer.engineerId} value={engineer.engineerId}>
+                      <option value="">Select an Engineer</option>
+                         {engDetails && Array.isArray(engDetails.data) && engDetails.data.length > 0 ? 
+                           ( engDetails.data.map(engineer => (
+                             <option key={engineer.engineerId} value={engineer.engineerName || engineer.engineerId}>
                                {engineer.engineerName}
                              </option>
-                            </>
                            ))
                          ) : (
-                           <option value="" disabled>Loading Engineers...</option>
+                           <option value="Er. Parthiban M">Er. Parthiban M</option>
                          )}
                          
                       </select>

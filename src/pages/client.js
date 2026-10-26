@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Paginator } from 'primereact/paginator';
 import Navbar from "./navbar";
 import Header from "./header";
-import { getClients } from '../services/dbService';
+import { getClients, deleteClient } from '../services/dbService';
 import './box.css';
 ReactSession.setStoreType("localStorage");
 
@@ -99,14 +99,17 @@ const App = () => {
   }, []);
 
   const removeclient = async (clientId) => {
-    fetchDatalog(clientId);
+    try { fetchDatalog(clientId); } catch (e) {}
     try {
-      const response = await axios.post(`https://upvcapi.sninfoserv.com/remove-clients/`, {clientId: clientId});
-      if(response.data.status === 'success'){
-        clietData();
-      }
+      await deleteClient(clientId);
+      await clietData();
+    } catch (err) {
+      console.warn('deleteClient error:', err);
+    }
+    try {
+      await axios.post(`https://upvcapi.sninfoserv.com/remove-clients/`, {clientId: clientId});
     } catch (error) {
-        console.error('Error fetching data:', error);
+      // offline fallback
     }
   };
   

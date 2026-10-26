@@ -4,18 +4,18 @@ import axios from 'axios';
 import { Paginator } from 'primereact/paginator';
 import Navbar from "./navbar";
 import Header from "./header";
-import { getQuotes } from '../services/dbService';
+import { getQuotes, deleteQuote, getInvoices } from '../services/dbService';
 
  function Quote() {
     const userId = ReactSession.get("upvcuserId");
     const userType = ReactSession.get("upvcuserType");
-    const [quoteData, setData] =useState('');
+    const [quoteData, setData] = useState({ data: [] });
     const Empid = ReactSession.get("upvcempid");
     const [searchQuery, setSearchQuery] = useState('');
     const [searchQuery2, setSearchQuery2] = useState('');
     const [searchQuery3, setSearchQuery3] = useState('');
     const [searchQuery5, setSearchQuery5] = useState('');
-    const [Invoicedata, setInvoicedata] = useState('');
+    const [Invoicedata, setInvoicedata] = useState({ data: [] });
     const [matchedQuotes, setMatchedQuotes] = useState([]);
 
     const handleSearchInputChangeID = (e) => setSearchQuery(e.target.value);
@@ -44,21 +44,23 @@ import { getQuotes } from '../services/dbService';
       startDateObj.setHours(0, 0, 0, 0); 
     }
   
-    const filteredData = quoteData?.data?.filter(item => {
-      const itemDate = new Date(item.date.split('-').reverse().join('-'));
-      return (
-        searchQuery2 === '' || (item.client?.name?.toLowerCase()?.includes(searchQuery2.toLowerCase())) &&
-        (startDateObj ? itemDate >= startDateObj : true) && 
-        searchQuery === '' || item.cusQuoteId.toString().includes(searchQuery)&&
-        (searchQuery5 === '' || (item.client?.location?.toLowerCase()?.includes(searchQuery5.toLowerCase()) ?? false))
-      );
+    const quoteList = Array.isArray(quoteData?.data) ? quoteData.data : (Array.isArray(quoteData) ? quoteData : []);
+    const filteredData = quoteList.filter(item => {
+      const name = item.client?.name || item.client_name || '';
+      const location = item.client?.location || item.location || '';
+      const quoteIdStr = (item.cusQuoteId || item.quoteId || item.quote_id || '').toString();
+      
+      const matchName = searchQuery2 === '' || name.toLowerCase().includes(searchQuery2.toLowerCase());
+      const matchId = searchQuery === '' || quoteIdStr.includes(searchQuery);
+      const matchLoc = searchQuery5 === '' || location.toLowerCase().includes(searchQuery5.toLowerCase());
+      return matchName && matchId && matchLoc;
     });
     
     const fetchDatalog = async (quoteID) => {
       try {
-        const response = await axios.post(`https://upvcapi.sninfoserv.com/log/`, {"removequote":quoteID});
+        await axios.post(`https://upvcapi.sninfoserv.com/log/`, {"removequote":quoteID});
       } catch (error) {
-        console.error('Error fetching data:', error);
+        // offline fallback
       }
     };
 
@@ -72,17 +74,19 @@ import { getQuotes } from '../services/dbService';
             date: q.created_at ? new Date(q.created_at).toLocaleDateString() : (q.date || ''),
             cusQuoteId: q.cusQuoteId || q.quote_id || '',
             quoteId: q.quote_id || q.id || '',
-            items: Array.isArray(q.items) ? q.items.length : (q.items || 1),
+            items: Array.isArray(q.items) ? q.items.length : (q.items || 0),
             client: {
               name: q.client_name || q.client?.name || 'Customer',
-              location: q.location || q.site_location || q.client?.location || ''
+              location: q.location || q.site_location || q.client?.location || 'Chennai'
             }
           }));
-          setData(mapped);
+          setData({ data: mapped });
           return;
         }
         const response = await axios.post('https://upvcapi.sninfoserv.com/all-quotes/', user);
         if (response.data && Array.isArray(response.data)) {
+          setData({ data: response.data });
+        } else if (response.data && Array.isArray(response.data.data)) {
           setData(response.data);
         }
       } catch (error) {
@@ -97,12 +101,19 @@ import { getQuotes } from '../services/dbService';
 
     const InvoiceData = async () => {
       try {
+        const invs = await getInvoices(userId);
+        if (Array.isArray(invs) && invs.length > 0) {
+          setInvoicedata({ data: invs.map(i => ({ quoteID: i.quote_id, invoice_id: i.invoice_no })) });
+          return;
+        }
         const response = await axios.get('https://upvcapi.sninfoserv.com/invoice/', {
           params: { user: userId }
         });
-        setInvoicedata(response.data);
+        if (response.data && response.data.data) {
+          setInvoicedata(response.data);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        setInvoicedata({ data: [] });
       }
     };
 
@@ -112,37 +123,37 @@ import { getQuotes } from '../services/dbService';
 
     useEffect(() => {
       if (!Invoicedata || !Invoicedata.data || !quoteData || !quoteData.data) {
-        console.error("Invoicedata or quoteData is undefined.");
-        return; // Exit early if the data is not available
+        return;
       }
 
-      const matches = []; // Array to hold all matched quotes
+      const matches = [];
 
       Invoicedata.data.forEach(invoice => {
         const invoiceQuoteID = invoice.quoteID;
-        const matchedQuotes = quoteData.data.filter(quote => quote.quoteId === invoiceQuoteID); // Use filter to find all matches
+        const matched = (quoteData.data || []).filter(quote => (quote.quoteId === invoiceQuoteID || quote.quote_id === invoiceQuoteID));
 
-        if(matchedQuotes.length > 0) {
-          matchedQuotes.forEach(matchedQuote => {
+        if(matched.length > 0) {
+          matched.forEach(matchedQuote => {
             matches.push({ invoiceId: invoice.invoice_id, matchedQuote });
           });
-        }else{
-       // console.log('No matching quote found for Invoice ID:', invoice.invoice_id);
         }
       });
 
-      setMatchedQuotes(matches); // Store all matched quotes in state
+      setMatchedQuotes(matches);
     }, [Invoicedata, quoteData]);
 
     const removequote = async (quoteID) => {
-      fetchDatalog(quoteID);
+      try { fetchDatalog(quoteID); } catch(e) {}
       try {
-        const response = await axios.post(`https://upvcapi.sninfoserv.com/quote-delete/`, {userId, quoteId: quoteID});
-        if(response.data.status === 'success'){
-          fetchData();
-        }
+        await deleteQuote(quoteID);
+        await fetchData();
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error deleting quote:', error);
+      }
+      try {
+        await axios.post(`https://upvcapi.sninfoserv.com/quote-delete/`, {userId, quoteId: quoteID});
+      } catch (error) {
+        // offline fallback
       }
     };
  

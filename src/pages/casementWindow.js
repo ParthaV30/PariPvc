@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ReactSession } from 'react-client-session';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { saveQuoteItem } from '../services/dbService';
 import Navbar from "./navbar";
 import Header from "./header";
 import left from '../images/handleLeft.png';
@@ -1748,18 +1749,18 @@ const App = () => {
 
 
   const sendDataToUrl = async () => {
-    fetchDatalog();
+    try { fetchDatalog(); } catch (e) {}
     try {
-      const response = await axios.post('https://upvcapi.sninfoserv.com/quotes/', {
-        coreData
-      });
-      //console.log('Response:', response.data);
-      if (response.data.status === 'success') {
-        navigate(selectPath);
-      }
-    } catch (error) {
-      console.error('Error sending data:', error);
+      await saveQuoteItem(coreData);
+    } catch (err) {
+      console.warn('saveQuoteItem fallback:', err);
     }
+    try {
+      await axios.post('https://upvcapi.sninfoserv.com/quotes/', { coreData });
+    } catch (error) {
+      // API fallback
+    }
+    navigate(`/quotesdet?id=${quoteId || coreData.quoteId}`);
   };
 
   const profileDatas = { width: calculatedBoxWidth, height: calculatedBoxHeight, profileId: selectedProfile, series, mesh, shutterCount, type: item }

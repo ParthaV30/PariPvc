@@ -19,13 +19,12 @@ const App = () => {
 
 
     useEffect(() => {
-      if (userType !== '2' ) {
+      if (userType === '0') {
         navigate(indexPath);
       }
     }, [userType, navigate]);
 
     const user = { "userId": userId };
-    //console.log(user);
     
     const [profileDetails, setProfileData] = useState(true);
     const [name, setName] = useState('');
@@ -61,9 +60,9 @@ const App = () => {
       }
 
       try {
-        const response = await axios.post(`https://upvcapi.sninfoserv.com/log/`, {userId, "Add Employee": formData});
+        await axios.post(`https://upvcapi.sninfoserv.com/log/`, {userId, "Add Employee": formData});
       } catch (error) {
-        console.error('Error fetching data:', error);
+        // offline fallback
       }
     };
 
@@ -71,13 +70,13 @@ const App = () => {
       const fetchData = async () => {
         try {
           const response = await axios.post('https://upvcapi.sninfoserv.com/profiles/', user);
-          setProfileData(response.data);
+          if (response.data) setProfileData(response.data);
         } catch (error) {
         } 
       };
   
       fetchData();
-    }, [profileDetails]);
+    }, []);
 
 
    

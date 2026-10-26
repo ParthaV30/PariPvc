@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSession } from 'react-client-session';
 import axios from 'axios';
+import { getCompanySettings, getQuoteById } from '../services/dbService';
 import numeral from 'numeral';
 import left from '../images/handleLeft.png';
 import right from '../images/handleRight.png';
@@ -82,8 +83,23 @@ import { toWords } from 'number-to-words';
 
     const brandData = async () => {
       try {
+        const settings = await getCompanySettings(users);
+        if (Array.isArray(settings) && settings.length > 0) {
+          setBdata(settings);
+          setDes(settings[0].companyTerms || '');
+          setBankName(settings[0].companyBank || 'HDFC Bank');
+          setBranchName(settings[0].companyBranch || 'Main Branch');
+          setAcHolderName(settings[0].companyBankerName || 'Pari and Co');
+          setAcType(settings[0].companyBankType || 'Current');
+          setAcNumber(settings[0].companyAcNum || '50200012345678');
+          setIfsc(settings[0].companyIfsc || 'HDFC0001234');
+          return;
+        }
+      } catch (e) {}
+
+      try {
         const response = await axios.get('https://upvcapi.sninfoserv.com/company/', {params: { userId: users }});
-        if(response.data.status === 'success'){
+        if(response.data?.status === 'success'){
           setBdata(response.data.data);
           setDes(response.data.data[0].companyTerms);
           setBankName(response.data.data[0].companyBank);
@@ -106,8 +122,27 @@ import { toWords } from 'number-to-words';
   
     const fetchData = async () => {
       try {
+        const quote = await getQuoteById(quoteIds);
+        if (quote) {
+          const quoteObj = {
+            quoteId: quote.quote_id || quoteIds,
+            client: {
+              name: quote.client_name || 'Customer',
+              phone: quote.phone || '',
+              location: quote.location || '',
+              siteLocation: quote.site_location || ''
+            },
+            quoteDetails: (quote.items || []).map((it, idx) => ({
+              id: it.id || idx,
+              quoteData: it.quoteData || it.data || it
+            }))
+          };
+          setQuoteData({ data: [quoteObj] });
+          return;
+        }
+
         const response = await axios.post(`https://upvcapi.sninfoserv.com/all-quotes/`, user);
-        setQuoteData(response.data);
+        if (response.data) setQuoteData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

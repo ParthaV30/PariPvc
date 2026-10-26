@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSession } from 'react-client-session';
 import axios from 'axios';
+import { getCompanySettings, getQuoteById } from '../services/dbService';
 import numeral from 'numeral';
 import left from '../images/handleLeft.png';
 import right from '../images/handleRight.png';
@@ -87,9 +88,16 @@ function Downlaod({ quotes, discount, toggle}) {
 
   const brandData = async () => {
     try {
+      const settings = await getCompanySettings(users);
+      if (Array.isArray(settings) && settings.length > 0) {
+        setBdata(settings);
+        return;
+      }
+    } catch (e) {}
+
+    try {
       const response = await axios.get('https://upvcapi.sninfoserv.com/company/', { params: { userId: users } });
-      //console.log(response.data);
-      if (response.data.status === 'success') {
+      if (response.data && response.data.status === 'success') {
         setBdata(response.data.data);
       }
     } catch (error) {
@@ -105,8 +113,27 @@ function Downlaod({ quotes, discount, toggle}) {
 
   const fetchData = async () => {
     try {
+      const quote = await getQuoteById(quoteIds);
+      if (quote) {
+        const quoteObj = {
+          quoteId: quote.quote_id || quoteIds,
+          client: {
+            name: quote.client_name || 'Customer',
+            phone: quote.phone || '',
+            location: quote.location || '',
+            siteLocation: quote.site_location || ''
+          },
+          quoteDetails: (quote.items || []).map((it, idx) => ({
+            id: it.id || idx,
+            quoteData: it.quoteData || it.data || it
+          }))
+        };
+        setQuoteData({ data: [quoteObj] });
+        return;
+      }
+
       const response = await axios.post(`https://upvcapi.sninfoserv.com/all-quotes/`, user);
-      setQuoteData(response.data);
+      if (response.data) setQuoteData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }

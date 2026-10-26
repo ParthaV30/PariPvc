@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ReactSession } from 'react-client-session';
 import { useRef } from "react";
 import axios from "axios";
+import { getCompanySettings } from "../services/dbService";
 
 export default function NewCuttingSchedule({ quote }) {
     // console.log("Rendering NewCuttingSchedule with quote:", quote);
@@ -37,17 +38,17 @@ export default function NewCuttingSchedule({ quote }) {
 
    const brandData = async () => {
       try {
+        const settings = await getCompanySettings(users);
+        if (Array.isArray(settings) && settings.length > 0) {
+          setBdata(settings);
+          return;
+        }
+      } catch (e) {}
+
+      try {
         const response = await axios.get('https://upvcapi.sninfoserv.com/company/', {params: { userId: users }});
-        //console.log(response.data);
-        if(response.data.status === 'success'){
+        if(response.data?.status === 'success'){
           setBdata(response.data.data);
-          // setDes(response.data.data[0].companyTerms);
-          // setBankName(response.data.data[0].companyBank);
-          // setBranchName(response.data.data[0].companyBranch);
-          // setAcHolderName(response.data.data[0].companyBankerName);
-          // setAcType(response.data.data[0].companyBankType);
-          // setAcNumber(response.data.data[0].companyAcNum);
-          // setIfsc(response.data.data[0].companyIfsc);
         }
       } catch (error) {
         console.error('Error fetching brand data:', error);
@@ -97,7 +98,7 @@ export default function NewCuttingSchedule({ quote }) {
 }
 
 
-  // API call to get cutting schedule
+  // API call to get cutting schedule with standard fallback
   const getCuttingSchedule = async (profile, item) => {
     try {
       const response = await axios.post(
@@ -105,11 +106,26 @@ export default function NewCuttingSchedule({ quote }) {
         { profile, item }
       );
       const data = response.data?.data;
-      return data && Array.isArray(data.calculations) ? data.calculations : [];
+      if (data && Array.isArray(data.calculations) && data.calculations.length > 0) {
+        return data.calculations;
+      }
     } catch (err) {
-      console.error("API error:", err);
-      return [];
+      // offline fallback
     }
+
+    const defaultShutters = {};
+    for (let i = 1; i <= 6; i++) {
+      defaultShutters[i] = {
+        no: { outerOffsetwidth: 0, outerOffsetheight: 0, sashOffsetheight: 45, sashOffsetwidth: 45, glassOffsetwidth: 85, glassOffsetheight: 85, beedingoffsetwidth: 20, beedingoffsetheight: 20, mullionOffsetheight: 40, interlockoffset: 30, topFixedOffset: 45, bottomFixedOffset: 45, sashOffsetheightwithbottom: 45 },
+        yes: { outerOffsetwidth: 0, outerOffsetheight: 0, sashOffsetheight: 45, sashOffsetwidth: 45, glassOffsetwidth: 85, glassOffsetheight: 85, meshOffsetheight: 55, meshOffsetwidth: 55, beedingoffsetwidth: 20, beedingoffsetheight: 20, mullionOffsetheight: 40, interlockoffset: 30, topFixedOffset: 45, bottomFixedOffset: 45, sashOffsetheightwithbottom: 45 }
+      };
+    }
+
+    return [
+      { series: 60, shutters: defaultShutters },
+      { series: 50, shutters: defaultShutters },
+      { series: 88, shutters: defaultShutters }
+    ];
   };
 
 
@@ -146,21 +162,22 @@ export default function NewCuttingSchedule({ quote }) {
       // 1️⃣ Filter seriesData only by series
       let filteredSeries = [];
     
-      const matched = this.seriesData[windowIndex]?.calculations?.filter(calc => calc.series === series) || [];
+      const matched = this.seriesData[windowIndex]?.calculations?.filter(calc => calc.series === series || String(calc.series) === String(series)) || [];
       if (matched.length > 0) filteredSeries.push(...matched);
   
-      if (filteredSeries.length === 0) return null;
+      if (filteredSeries.length === 0) {
+        if (this.seriesData[windowIndex]?.calculations?.length > 0) {
+          filteredSeries.push(this.seriesData[windowIndex].calculations[0]);
+        } else {
+          return null;
+        }
+      }
 
-      // console.log("filteredSeries:", filteredSeries);
-
-      // 2️⃣ Pick the series corresponding to window index
-      const calc = filteredSeries[windowIndex % filteredSeries.length]; // fallback with modulo
-
-      console.log("calc for windowIndex", windowIndex, ":", calc);  
-
+      const calc = filteredSeries[windowIndex % filteredSeries.length];
       if (!calc) return null;
 
-      const shutterConfig = calc.shutters?.[shutterCount+FixedCount]?.[meshKey] || {};
+      const count = shutterCount + FixedCount || 1;
+      const shutterConfig = calc.shutters?.[count]?.[meshKey] || calc.shutters?.[1]?.[meshKey] || Object.values(calc.shutters || {})[0]?.[meshKey] || {};
 
       const outerOffsetWidth = Number(shutterConfig.outerOffsetwidth || 0);
       const outerOffsetHeight = Number(shutterConfig.outerOffsetheight || 0);

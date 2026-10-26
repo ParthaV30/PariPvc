@@ -17,6 +17,7 @@ import HomeComponent from "./download";
 import ScheduleComponent from "./cuttingSchedule";
 import Invoice from "./invoice";
 import html2pdf from "html2pdf.js";
+import { getQuoteById, deleteQuoteItem, getInvoices } from "../services/dbService";
 import "./box.css";
 
 function Quotesdet({ quotes }) {
@@ -94,18 +95,22 @@ function Quotesdet({ quotes }) {
 
   const InvoiceData = async () => {
     try {
+      const invs = await getInvoices(userId);
+      if (Array.isArray(invs) && invs.length > 0) {
+        setInvoicedata({ data: invs.map(i => ({ quoteID: i.quote_id, invoice_id: i.invoice_no })) });
+        return;
+      }
       const response = await axios.get(
         "https://upvcapi.sninfoserv.com/invoice/",
         {
           params: { user: userId },
         }
       );
-      // console.log("invoice", response.data);
-      if (response.data.status === "success") {
+      if (response.data && response.data.status === "success") {
         setInvoicedata(response.data);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      setInvoicedata({ data: [] });
     }
   };
 
@@ -117,11 +122,11 @@ function Quotesdet({ quotes }) {
           params: { quoteID: quoteIds },
         }
       );
-      if (response.data.status === "success") {
-        setDownloadData(response?.data?.data[0]?.discount);
+      if (response.data && response.data.status === "success") {
+        setDownloadData(response?.data?.data[0]?.discount || 0);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      setDownloadData(0);
     }
   };
 
@@ -135,47 +140,63 @@ function Quotesdet({ quotes }) {
       Invoicedata &&
       Invoicedata.data &&
       Invoicedata.data.filter((invoice) => invoice.quoteID === quoteIds);
-    //  console.log('s_inv',singleInvoice);
 
-    setMatchedQuotes(singleInvoice); // Store all matched quotes in state
+    setMatchedQuotes(singleInvoice || []);
   }, [Invoicedata]);
 
   const removequote = async (quoteIds, detailIndex) => {
-    fetchDatalog(quoteIds, detailIndex);
-    const formData = {
-      quoteId: quoteIds,
-      rowId: detailIndex,
-    };
-    //console.log(formData);
+    try { fetchDatalog(quoteIds, detailIndex); } catch (e) {}
     try {
-      const response = await axios.post(
+      await deleteQuoteItem(quoteIds, detailIndex);
+      alert("Item deleted successfully");
+      await fetchData();
+    } catch (err) {
+      console.warn("deleteQuoteItem error:", err);
+    }
+    try {
+      const formData = {
+        quoteId: quoteIds,
+        rowId: detailIndex,
+      };
+      await axios.post(
         `https://upvcapi.sninfoserv.com/item-delete/`,
         formData
       );
-      //console.log(response.data);
-      if (response.data.status === "success") {
-        window.location.reload();
-        alert("Deleted Sliding Window");
-        fetchData();
-        window.location.reload();
-      }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      // offline fallback
     }
   };
 
-  // console.log("user",user)
-
   const fetchData = async () => {
     try {
+      const quote = await getQuoteById(quoteIds);
+      if (quote) {
+        const quoteObj = {
+          quoteId: quote.quote_id || quoteIds,
+          client: {
+            name: quote.client_name || 'Customer',
+            phone: quote.phone || '',
+            location: quote.location || '',
+            siteLocation: quote.site_location || ''
+          },
+          quoteDetails: (quote.items || []).map((it, idx) => ({
+            id: it.id || idx,
+            quoteData: it.quoteData || it.data || it
+          }))
+        };
+        setQuoteData({ data: [quoteObj] });
+        return;
+      }
+
       const response = await axios.post(
         `https://upvcapi.sninfoserv.com/all-quotes/`,
         user
       );
-      setQuoteData(response.data);
-      //console.log(response.data);
+      if (response.data) {
+        setQuoteData(response.data);
+      }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching quote details:", error);
     }
   };
 

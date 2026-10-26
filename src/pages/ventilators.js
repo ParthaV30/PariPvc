@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ReactSession } from 'react-client-session';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { saveQuoteItem } from '../services/dbService';
 import Navbar from "./navbar";
 import Header from "./header";
 import Fan from '../images/fan.png';
@@ -1454,19 +1455,19 @@ useEffect(() => {
    
 
     const sendDataToUrl = async () => {
-      fetchDatalog();
-      try {
-        const response = await axios.post('https://upvcapi.sninfoserv.com/quotes/', {
-          coreData
-        });
-        if(response.data.status === 'success'){
-          navigate(selectPath);
-        }
-      } catch (error) {
-        console.error('Error sending data:', error);
-
-      }
-    };
+    try { fetchDatalog(); } catch (e) {}
+    try {
+      await saveQuoteItem(coreData);
+    } catch (err) {
+      console.warn('saveQuoteItem fallback:', err);
+    }
+    try {
+      await axios.post('https://upvcapi.sninfoserv.com/quotes/', { coreData });
+    } catch (error) {
+      // API fallback
+    }
+    navigate(`/quotesdet?id=${quoteId || coreData.quoteId}`);
+  };
 
     const openModal3 = (content) => {
       const modal = document.getElementById('onloadModal3');

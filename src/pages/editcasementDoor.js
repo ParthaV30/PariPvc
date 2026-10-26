@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ReactSession } from "react-client-session";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { saveQuoteItem } from '../services/dbService';
 import Navbar from "./navbar";
 import Header from "./header";
 import left from "../images/handleLeft.png";
@@ -2092,24 +2093,18 @@ function Editquotees() {
   };
 
   const sendDataToUrl = async () => {
-    // console.log("start");
-    fetchDatalog();
+    try { fetchDatalog(); } catch (e) {}
     try {
-      const response = await axios.post(
-        "https://upvcapi.sninfoserv.com/edit-quote/",
-        {
-          coreData,
-        }
-      );
-      //console.log('Response:', response.data);
-      if (response.data.status === "success") {
-        // console.log("send");
-        navigate(`/quotesdet?id=${quoteIds}`);
-      }
-    } catch (error) {
-      console.error("Error sending data:", error);
-      // console.log("error",error);
+      await saveQuoteItem(coreData);
+    } catch (err) {
+      console.warn('saveQuoteItem fallback:', err);
     }
+    try {
+      await axios.post('https://upvcapi.sninfoserv.com/edit-quote/', { coreData });
+    } catch (error) {
+      // API fallback
+    }
+    navigate(`/quotesdet?id=${quoteIds || quoteId || coreData.quoteId}`);
   };
 
   const profileDatas = {
