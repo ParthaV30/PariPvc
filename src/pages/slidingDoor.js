@@ -1958,16 +1958,17 @@ const App = () => {
 
   const sendprofileDataToUrl = () => {
     setCalcBtn(true);
-
-    const hasInvalidValue = newWidths.some(value => value < 1 || value > 3);
-
-    if (hasInvalidValue) {
-      openModal();
-    } else {
+    try {
       handleContinueCalc();
-      setCalcBtn(false);
-      setIsProfile(true);
+    } catch (e) {
+      console.warn('handleContinueCalc error:', e);
+    }
+    setCalcBtn(false);
+    setIsProfile(true);
+    try {
       addDef();
+    } catch (e) {
+      console.warn('addDef error:', e);
     }
   };
 
@@ -2708,7 +2709,7 @@ const App = () => {
                               </select>
                               <select class="mb-3 form-select-select item-line w-75" value={selectedFrameId || ''} onChange={handleFrameIdChange}>
                                 {selectedFrameSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series First</option>)}
-                                {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame.items.map((item) => (
+                                {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame?.items?.map((item) => (
                                   <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                 ))}
                               </select>
@@ -2729,7 +2730,7 @@ const App = () => {
                               </select>
                               <select class="form-select-select item-line w-75" value={selectedShutterId || ''} onChange={handleShutterIdChange}>
                                 {selectedShutterSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series First</option>)}
-                                {seriesDataShutter && seriesDataShutter.items.map((item) => (
+                                {seriesDataShutter && seriesDataShutter?.items?.map((item) => (
                                   <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                 ))}
                               </select>
@@ -2751,7 +2752,7 @@ const App = () => {
                               </select>
                               <select class="mb-3 form-select-select item-line w-75" value={selectedMullionId || ''} onChange={handleMullionIdChange}>
                                 {setSelectedMullionSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series </option>)}
-                                {seriesDataMullion && seriesDataMullion.items.map((item) => (
+                                {seriesDataMullion && seriesDataMullion?.items?.map((item) => (
                                   <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                 ))}
                               </select>
@@ -2773,7 +2774,7 @@ const App = () => {
                               </select>
                               <select class="mb-3 form-select-select item-line w-75" value={selectedInterLockId || ''} onChange={handleInterLockIdChange}>
                                 {selectedInterLockSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series </option>)}
-                                {seriesDataInterLock && seriesDataInterLock.items.map((item) => (
+                                {seriesDataInterLock && seriesDataInterLock?.items?.map((item) => (
                                   <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                 ))}
                               </select>
@@ -2794,7 +2795,7 @@ const App = () => {
                               </select>
                               <select class="mb-3 form-select-select item-line w-75" value={selectedBeedingId || ''} onChange={handleBeedingIdChange}>
                                 {selectedBeedingSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series </option>)}
-                                {seriesDataBeeding && seriesDataBeeding.items.map((item) => (
+                                {seriesDataBeeding && seriesDataBeeding?.items?.map((item) => (
                                   <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                 ))}
                               </select>
@@ -2816,7 +2817,7 @@ const App = () => {
                                 </select>
                                 <select class="mb-3 form-select-select item-line w-75" value={selectedPanelId || ''} onChange={handlePanelIdChange}>
                                   {setSelectedPanelSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series </option>)}
-                                  {seriesDataPanel && seriesDataPanel.items.map((item) => (
+                                  {seriesDataPanel && seriesDataPanel?.items?.map((item) => (
                                     <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                   ))}
                                 </select>
@@ -2840,7 +2841,7 @@ const App = () => {
                                 </select>
                                 <select class="mb-3 form-select-select item-line w-75" value={selectedCuplerId || ''} onChange={handleCuplerIdChange}>
                                   {selectedCuplerSeries ? (<option value="">Select ID</option>) : (<option value="">Select Series </option>)}
-                                  {seriesDataCupler && seriesDataCupler.items.map((item) => (
+                                  {seriesDataCupler && seriesDataCupler?.items?.map((item) => (
                                     <option key={item.id} value={item.id}>{item.id + ' - ' + item.name}</option>
                                   ))}
                                 </select>

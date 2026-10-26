@@ -980,49 +980,41 @@ useEffect(() => {
     const sendprofileDataToUrl = async () => {
       setCalcBtn(true);
       try {
-        const response = await axios.post('https://upvcapi.sninfoserv.com/find-default/', profileDatas);
-        //console.log('Response:', response.data);
-        if(response.data.status === 'success'){
-           if(response.data.data[0].beeding !== ''){
-            setSelectedBeedingSeries(response.data.data[0].beedingSeries);
-            setSelectedBeedingId(response.data.data[0].beeding);
-            setSelectedLBeedingSeries(response.data.data[0].beedingSeries);
-            setSelectedLBeedingId(response.data.data[0].beeding);
-           }
-           if(response.data.data[0].frame !== ''){
-            setSelectedFrameSeries(response.data.data[0].frameSeries);
-            setSelectedFrameId(response.data.data[0].frame);
-           }
-           if(response.data.data[0].interlock !== ''){
-            //alert('interlock');
-           }
-           if(response.data.data[0].mesh !== ''){
-           // setSelectedMeshSeries(response.data.data[0].meshSeries);
-           // setSelectedMeshId(response.data.data[0].mesh);
-           }
-           if(response.data.data[0].mullion !== null){
-            setSelectedMullionSeries(response.data.data[0].mullionSeries);
-            setSelectedMullionId(response.data.data[0].mullion); 
-           }
-           if(response.data.data[0].panel !== ''){
-            //alert('panel');
-           }
-           if(response.data.data[0].shutter !== ''){
-            //setSelectedShutterSeries(response.data.data[0].shutterSeries);
-            //setSelectedShutterId(response.data.data[0].shutter);
-           }
-           if(response.data.data[0].cupler !== ''){
-            //setSelectedCuplerSeries(response.data.data[0].cuplerSeries);
-            //setSelectedCuplerId(response.data.data[0].cupler);
-           }
+        let defaultData = null;
+        try {
+          const response = await axios.post('https://upvcapi.sninfoserv.com/find-default/', profileDatas);
+          if (response?.data?.status === 'success' && response?.data?.data?.[0]) {
+            defaultData = response.data.data[0];
+          }
+        } catch (apiErr) {}
 
+        if (!defaultData) {
+          const local = findLocalDefaultProfile(profileDatas);
+          if (local?.data?.[0]) {
+            defaultData = local.data[0];
+          }
+        }
+
+        if (defaultData) {
+          if (defaultData.beeding) {
+            setSelectedBeedingSeries(defaultData.beedingSeries || series);
+            setSelectedBeedingId(defaultData.beeding);
+          }
+          if (defaultData.frame) {
+            setSelectedFrameSeries(defaultData.frameSeries || series);
+            setSelectedFrameId(defaultData.frame);
+          }
+          if (defaultData.mullion) {
+            setSelectedMullionSeries(defaultData.mullionSeries || series);
+            setSelectedMullionId(defaultData.mullion);
+          }
         }
       } catch (error) {
-        console.error('Error sending data:', error);
+        console.error('Error loading default profile:', error);
       }
       setCalcBtn(false);
       setIsProfile(true);
-      addDef();
+      try { addDef(); } catch (e) {}
     };
     // Outer Bottom Line
   const getOuterBottom = (height, screen) => {
@@ -1313,7 +1305,7 @@ function changeMeasure(name) {
                         </select>
                         <select class="mb-3 form-select-select item-line w-75" value={selectedFrameId || ''} onChange={handleFrameIdChange}>
                           {selectedFrameSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                            {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame.items.map((item) => (
+                            {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame?.items?.map((item) => (
                               <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                           ))}
                         </select>
@@ -1335,7 +1327,7 @@ function changeMeasure(name) {
                         </select>
                         <select class="mb-3 form-select-select item-line w-75" value={selectedMullionId || ''} onChange={handleMullionIdChange}>
                           {selectedMullionSeries ? (<option value="">Select ID</option>):(<option value="">Select Series </option>)}
-                            {seriesDataMullion && seriesDataMullion.items.map((item) => (
+                            {seriesDataMullion && seriesDataMullion?.items?.map((item) => (
                               <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                             ))}
                         </select>
@@ -1356,7 +1348,7 @@ function changeMeasure(name) {
                   </select>
                     <select class="mb-3 form-select-select item-line w-75" value={selectedBeedingId || ''} onChange={handleBeedingIdChange}>
                       {selectedBeedingSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                      {seriesDataBeeding && seriesDataBeeding.items.map((item) => (
+                      {seriesDataBeeding && seriesDataBeeding?.items?.map((item) => (
                         <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                       ))}
                     </select>
