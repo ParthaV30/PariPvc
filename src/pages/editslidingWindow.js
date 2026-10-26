@@ -1,3 +1,4 @@
+import { DEFAULT_COST_DATA, fetchCostDataService } from "../services/costManager";
 import { getMergedProfileDetails } from '../services/profileManager';
 import React, { useEffect, useState } from "react";
 import { ReactSession } from "react-client-session";
@@ -64,7 +65,7 @@ function Editquotees() {
   const [mesh, setMesh] = useState("");
   const [profileDetails, setProfileData] = useState(() => getMergedProfileDetails(null));
   const [qty, setQty] = useState();
-  const [costData, setCostData] = useState(true);
+  const [costData, setCostData] = useState(DEFAULT_COST_DATA.data);
   const [customProfile, setCustomProfile] = useState();
   const arrayvalue = urlParams.get("arrayValues");
   const [calcBtn, setCalcBtn] = useState(false);
@@ -316,13 +317,11 @@ function Editquotees() {
   useEffect(() => {
     const fetchcostData = async () => {
       try {
-        const response = await axios.post(
-          "https://upvcapi.sninfoserv.com/costs/",
-          user
-        );
-        setCostData(response.data.data);
-        console.log("cost", response.data);
-      } catch (error) { setProfileData(getMergedProfileDetails(null)); }
+        const cData = await fetchCostDataService(user);
+        setCostData(cData);
+      } catch (error) {
+        setCostData(DEFAULT_COST_DATA.data);
+      }
     };
 
     fetchcostData();
@@ -957,15 +956,15 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedShutterSeries);
   const selectedShutterPrice = selectedShutterId
-    ? seriesDataShutter.items.find((item) => item.id === selectedShutterId)
+    ? seriesDataShutter?.items?.find((item) => item.id === selectedShutterId)
       .price
     : "0";
   const selectedShutterLength = selectedShutterId
-    ? seriesDataShutter.items.find((item) => item.id === selectedShutterId)
+    ? seriesDataShutter?.items?.find((item) => item.id === selectedShutterId)
       .length
     : "0";
   const selectedShutterWeight = selectedShutterId
-    ? seriesDataShutter.items.find((item) => item.id === selectedShutterId)
+    ? seriesDataShutter?.items?.find((item) => item.id === selectedShutterId)
       .weight
     : "0";
   const selectedShutterName = selectedShutterId
@@ -998,15 +997,15 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedMullionSeries);
   const selectedMullionPrice = selectedMullionId
-    ? seriesDataMullion.items.find((item) => item.id === selectedMullionId)
+    ? seriesDataMullion?.items?.find((item) => item.id === selectedMullionId)
       .price
     : "0";
   const selectedMullionLength = selectedMullionId
-    ? seriesDataMullion.items.find((item) => item.id === selectedMullionId)
+    ? seriesDataMullion?.items?.find((item) => item.id === selectedMullionId)
       .length
     : "0";
   const selectedMullionWeight = selectedMullionId
-    ? seriesDataMullion.items.find((item) => item.id === selectedMullionId)
+    ? seriesDataMullion?.items?.find((item) => item.id === selectedMullionId)
       .weight
     : "0";
   const selectedMullionName = selectedMullionId
@@ -1038,15 +1037,15 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedBeedingSeries);
   const selectedBeedingPrice = selectedBeedingId
-    ? seriesDataBeeding.items.find((item) => item.id === selectedBeedingId)
+    ? seriesDataBeeding?.items?.find((item) => item.id === selectedBeedingId)
       .price
     : "0";
   const selectedBeedingLength = selectedBeedingId
-    ? seriesDataBeeding.items.find((item) => item.id === selectedBeedingId)
+    ? seriesDataBeeding?.items?.find((item) => item.id === selectedBeedingId)
       .length
     : "0";
   const selectedBeedingWeight = selectedBeedingId
-    ? seriesDataBeeding.items.find((item) => item.id === selectedBeedingId)
+    ? seriesDataBeeding?.items?.find((item) => item.id === selectedBeedingId)
       .weight
     : "0";
   const selectedBeedingName = selectedBeedingId
@@ -1151,19 +1150,19 @@ function Editquotees() {
     profileData &&
     profileData.find((serieses) => serieses.series === selectedInterLockSeries);
   const selectedInterLockPrice = selectedInterLockId
-    ? seriesDataInterLock.items.find((item) => item.id === selectedInterLockId)
+    ? seriesDataInterLock?.items?.find((item) => item.id === selectedInterLockId)
       .price
     : 0;
   const selectedInterLockLength = selectedInterLockId
-    ? seriesDataInterLock.items.find((item) => item.id === selectedInterLockId)
+    ? seriesDataInterLock?.items?.find((item) => item.id === selectedInterLockId)
       .length
     : 0;
   const selectedInterLockWeight = selectedInterLockId
-    ? seriesDataInterLock.items.find((item) => item.id === selectedInterLockId)
+    ? seriesDataInterLock?.items?.find((item) => item.id === selectedInterLockId)
       .weight
     : 0;
   const selectedInterLockName = selectedInterLockId
-    ? seriesDataInterLock.items.find((item) => item.id === selectedInterLockId)
+    ? seriesDataInterLock?.items?.find((item) => item.id === selectedInterLockId)
       .name
     : "Loading";
 
@@ -3406,7 +3405,7 @@ function Editquotees() {
                             <td>Frame Gasket</td>
                             <th ><select class="form-select-select item-line w-75" value={ProfilegasketCost} onChange={ProfilegasketChange}>
                               <option value="" hidden>Select Model</option>
-                              {ProfilegasketValues && Object.entries(ProfilegasketValues).map(([key, { label, value }]) => (
+                              {ProfilegasketValues && Object.entries(ProfilegasketValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -3420,7 +3419,7 @@ function Editquotees() {
                             <td>Shutter Gasket</td>
                             <th ><select class="form-select-select item-line w-75" value={ShuttergasketCost} onChange={ShuttergasketChange}>
                               <option value="" hidden>Select Model</option>
-                              {ShuttergasketValues && Object.entries(ShuttergasketValues).map(([key, { label, value }]) => (
+                              {ShuttergasketValues && Object.entries(ShuttergasketValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -3434,7 +3433,7 @@ function Editquotees() {
                             <td>Mullion Gasket</td>
                             <th ><select class="form-select-select item-line w-75" value={MulliongasketCost} onChange={MulliongasketChange}>
                               <option value="" hidden>Select Model</option>
-                              {MulliongasketValues && Object.entries(MulliongasketValues).map(([key, { label, value }]) => (
+                              {MulliongasketValues && Object.entries(MulliongasketValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -3448,7 +3447,7 @@ function Editquotees() {
                             <td>Beeding Gasket</td>
                             <th ><select class="form-select-select item-line w-75" value={BeedinggasketCost} onChange={BeedinggasketChange}>
                               <option value="" hidden>Select Model</option>
-                              {BeedinggasketValues && Object.entries(BeedinggasketValues).map(([key, { label, value }]) => (
+                              {BeedinggasketValues && Object.entries(BeedinggasketValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -3464,7 +3463,7 @@ function Editquotees() {
                               <td >Mesh Gasket</td>
                               <th ><select class="form-select-select item-line w-75" value={meshgasketCost} onChange={meshgasketChange}>
                                 <option value="" hidden>Select Model</option>
-                                {Object.entries(meshgasketValues).map(([key, { label, value }]) => (
+                                {Object.entries(meshgasketValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3487,7 +3486,7 @@ function Editquotees() {
                             <th>Wastage( {data.wastage}% )</th>
                             <th ><select class="form-select-select item-line w-75" value={wastageCost} onChange={wasteChange}>
                               <option value="" hidden>Select Model</option>
-                              {wasteValues && Object.entries(wasteValues).map(([key, { label, value }]) => (
+                              {wasteValues && Object.entries(wasteValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' ' + value + '%'}</option>
                               ))}
                             </select>
@@ -3532,7 +3531,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {steelValues &&
-                                  Object.entries(steelValues).map(
+                                  Object.entries(steelValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3569,7 +3568,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {steelShutterValues &&
-                                  Object.entries(steelShutterValues).map(
+                                  Object.entries(steelShutterValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3607,7 +3606,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {steelMullionValues &&
-                                  Object.entries(steelMullionValues).map(
+                                  Object.entries(steelMullionValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3646,7 +3645,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {mullionClampValues &&
-                                  Object.entries(mullionClampValues).map(
+                                  Object.entries(mullionClampValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3687,7 +3686,7 @@ function Editquotees() {
                                       Select Model
                                     </option>
                                     {steelmeshValues &&
-                                      Object.entries(steelmeshValues).map(
+                                      Object.entries(steelmeshValues || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label + " - ₹ " + value}
@@ -3725,7 +3724,7 @@ function Editquotees() {
                                       Select Model
                                     </option>
                                     {meshJAValues &&
-                                      Object.entries(meshJAValues).map(
+                                      Object.entries(meshJAValues || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label + " - ₹ " + value}
@@ -3765,7 +3764,7 @@ function Editquotees() {
                                     Select Model
                                   </option>
                                   {grillValues &&
-                                    Object.entries(grillValues).map(
+                                    Object.entries(grillValues || {}).map(
                                       ([key, { label, value }]) => (
                                         <option key={key} value={value}>
                                           {label + " - ₹ " + value}
@@ -3801,7 +3800,7 @@ function Editquotees() {
                               >
                                 <option value="">Select Model</option>
                                 {frictionStayValues &&
-                                  Object.entries(frictionStayValues).map(
+                                  Object.entries(frictionStayValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3837,7 +3836,7 @@ function Editquotees() {
                               >
                                 <option value="">Select Model</option>
                                 {espagValues &&
-                                  Object.entries(espagValues).map(
+                                  Object.entries(espagValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3873,7 +3872,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {alTrackValues &&
-                                  Object.entries(alTrackValues).map(
+                                  Object.entries(alTrackValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3910,7 +3909,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {bArrestorValues &&
-                                  Object.entries(bArrestorValues).map(
+                                  Object.entries(bArrestorValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3947,7 +3946,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {jStopperValues &&
-                                  Object.entries(jStopperValues).map(
+                                  Object.entries(jStopperValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -3984,7 +3983,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {dArrestorValues &&
-                                  Object.entries(dArrestorValues).map(
+                                  Object.entries(dArrestorValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -4021,7 +4020,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {gRollValues &&
-                                  Object.entries(gRollValues).map(
+                                  Object.entries(gRollValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -4056,7 +4055,7 @@ function Editquotees() {
                               >
                                 <option value="">Select Model</option>
                                 {touchLockValues &&
-                                  Object.entries(touchLockValues).map(
+                                  Object.entries(touchLockValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -4093,7 +4092,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {wStripValues &&
-                                  Object.entries(wStripValues).map(
+                                  Object.entries(wStripValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -4130,7 +4129,7 @@ function Editquotees() {
                                   Select Model
                                 </option>
                                 {screwValues &&
-                                  Object.entries(screwValues).map(
+                                  Object.entries(screwValues || {}).map(
                                     ([key, { label, value }]) => (
                                       <option key={key} value={value}>
                                         {label + " - ₹ " + value}
@@ -4169,7 +4168,7 @@ function Editquotees() {
                                       Select Model
                                     </option>
                                     {meshValues &&
-                                      Object.entries(meshValues).map(
+                                      Object.entries(meshValues || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label + " - ₹ " + value}
@@ -4206,7 +4205,7 @@ function Editquotees() {
                                       Select Model
                                     </option>
                                     {meshRollValues &&
-                                      Object.entries(meshRollValues).map(
+                                      Object.entries(meshRollValues || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label + " - ₹ " + value}
@@ -4277,7 +4276,7 @@ function Editquotees() {
                                       Select Margin Cost
                                     </option>
                                     {margin &&
-                                      Object.entries(margin).map(
+                                      Object.entries(margin || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label +
@@ -4352,7 +4351,7 @@ function Editquotees() {
                                       Select Marketing Coast
                                     </option>
                                     {marketing &&
-                                      Object.entries(marketing).map(
+                                      Object.entries(marketing || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label +
@@ -4406,7 +4405,7 @@ function Editquotees() {
                                       Select Margin Cost
                                     </option>
                                     {transport &&
-                                      Object.entries(transport).map(
+                                      Object.entries(transport || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label +
@@ -4450,7 +4449,7 @@ function Editquotees() {
                                       Select Labour Coast
                                     </option>
                                     {labourF &&
-                                      Object.entries(labourF).map(
+                                      Object.entries(labourF || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label +
@@ -4496,7 +4495,7 @@ function Editquotees() {
                                       Select Labour Coast
                                     </option>
                                     {labourS &&
-                                      Object.entries(labourS).map(
+                                      Object.entries(labourS || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label +
@@ -4536,7 +4535,7 @@ function Editquotees() {
                                       Select Glass Cost
                                     </option>
                                     {glasses &&
-                                      Object.entries(glasses).map(
+                                      Object.entries(glasses || {}).map(
                                         ([key, { label, value }]) => (
                                           <option key={key} value={value}>
                                             {label +

@@ -5131,7 +5131,7 @@ function Quotees() {
                                     </select>
                                       <select class="mb-3 form-select-select item-line w-75" value={selectedLBeedingId || ''} onChange={handleLBeedingIdChange}>
                                         {selectedLBeedingSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                                        {seriesDataLBeeding && seriesDataLBeeding.items.map((item) => (
+                                        {seriesDataLBeeding && seriesDataLBeeding?.items?.map((item) => (
                                           <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                                         ))}
                                       </select>

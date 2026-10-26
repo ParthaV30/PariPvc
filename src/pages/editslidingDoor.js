@@ -1,3 +1,4 @@
+import { DEFAULT_COST_DATA, fetchCostDataService } from "../services/costManager";
 import { getMergedProfileDetails } from '../services/profileManager';
 import React, { useEffect, useState } from 'react';
 import { ReactSession } from 'react-client-session';
@@ -70,7 +71,7 @@ function Editquotees() {
   const [panelType, setPanelType] = useState(1);
   const [profileDetails, setProfileData] = useState(() => getMergedProfileDetails(null));
   const [qty, setQty] = useState();
-  const [costData, setCostData] = useState(true);
+  const [costData, setCostData] = useState(DEFAULT_COST_DATA.data);
   const [customProfile, setCustomProfile] = useState();
   const arrayvalue = urlParams.get('arrayValues');
   const [calcBtn, setCalcBtn] = useState(false);
@@ -337,10 +338,11 @@ function Editquotees() {
   useEffect(() => {
     const fetchcostData = async () => {
       try {
-        const response = await axios.post('https://upvcapi.sninfoserv.com/costs/', user);
-        setCostData(response.data.data);
-        //   console.log("cost", response.data);
-      } catch (error) { setProfileData(getMergedProfileDetails(null)); }
+        const cData = await fetchCostDataService(user);
+        setCostData(cData);
+      } catch (error) {
+        setCostData(DEFAULT_COST_DATA.data);
+      }
     };
 
     fetchcostData();
@@ -3226,7 +3228,7 @@ function Editquotees() {
                         <th >
                           <select class="form-select-select item-line w-75" value={ProfilegasketCost} onChange={ProfilegasketChange}>
                             <option value="" hidden>Select Model</option>
-                            {ProfilegasketValues && Object.entries(ProfilegasketValues).map(([key, { label, value }]) => (
+                            {ProfilegasketValues && Object.entries(ProfilegasketValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3241,7 +3243,7 @@ function Editquotees() {
                         <th >
                           <select class="form-select-select item-line w-75" value={ShuttergasketCost} onChange={ShuttergasketChange}>
                             <option value="" hidden>Select Model</option>
-                            {ShuttergasketValues && Object.entries(ShuttergasketValues).map(([key, { label, value }]) => (
+                            {ShuttergasketValues && Object.entries(ShuttergasketValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3256,7 +3258,7 @@ function Editquotees() {
                         <th >
                           <select class="form-select-select item-line w-75" value={BeedinggasketCost} onChange={BeedinggasketChange}>
                             <option value="" hidden>Select Model</option>
-                            {BeedinggasketValues && Object.entries(BeedinggasketValues).map(([key, { label, value }]) => (
+                            {BeedinggasketValues && Object.entries(BeedinggasketValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3276,7 +3278,7 @@ function Editquotees() {
                         <th >
                           <select class="form-select-select item-line w-75" value={wastageCost} onChange={wasteChange}>
                             <option value="" hidden>Select Model</option>
-                            {wasteValues && Object.entries(wasteValues).map(([key, { label, value }]) => (
+                            {wasteValues && Object.entries(wasteValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' ' + value + '%'}</option>
                             ))}
                           </select>
@@ -3311,7 +3313,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={steelFramCost} onChange={steelframeChange}>
                             <option value="" hidden>Select Model</option>
-                            {steelValues && Object.entries(steelValues).map(([key, { label, value }]) => (
+                            {steelValues && Object.entries(steelValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3325,7 +3327,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={steelShutterCost} onChange={steelShutteChange}>
                             <option value="" hidden>Select Model</option>
-                            {steelShutterValues && Object.entries(steelShutterValues).map(([key, { label, value }]) => (
+                            {steelShutterValues && Object.entries(steelShutterValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3339,7 +3341,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={steelMullionCost} onChange={steelMullionChange}>
                             <option value="" hidden>Select Model</option>
-                            {steelMullionValues && Object.entries(steelMullionValues).map(([key, { label, value }]) => (
+                            {steelMullionValues && Object.entries(steelMullionValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3355,7 +3357,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={mullionClampCost} onChange={mullionClampChange}>
                             <option value="" hidden>Select Model</option>
-                            {mullionClampValues && Object.entries(mullionClampValues).map(([key, { label, value }]) => (
+                            {mullionClampValues && Object.entries(mullionClampValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3371,7 +3373,7 @@ function Editquotees() {
                           <td>
                             <select class="form-select-select item-line w-75" value={grillCost} onChange={grillChange}>
                               <option value="" hidden>Select Model</option>
-                              {grillValues && Object.entries(grillValues).map(([key, { label, value }]) => (
+                              {grillValues && Object.entries(grillValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -3386,7 +3388,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={frictionStayCost} onChange={frictionStayChange}>
                             <option value="">Select Model</option>
-                            {frictionStayValues && Object.entries(frictionStayValues).map(([key, { label, value }]) => (
+                            {frictionStayValues && Object.entries(frictionStayValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3401,7 +3403,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={espagCost} onChange={espagChange}>
                             <option value="">Select Model</option>
-                            {espagValues && Object.entries(espagValues).map(([key, { label, value }]) => (
+                            {espagValues && Object.entries(espagValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3415,7 +3417,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={espagmCost} onChange={espagmChange}>
                             <option value="">Select Model</option>
-                            {espagmValues && Object.entries(espagmValues).map(([key, { label, value }]) => (
+                            {espagmValues && Object.entries(espagmValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3429,7 +3431,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={adjRollCost} onChange={adjRollChange}>
                             <option value="">Select Model</option>
-                            {adjRollValues && Object.entries(adjRollValues).map(([key, { label, value }]) => (
+                            {adjRollValues && Object.entries(adjRollValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3443,7 +3445,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={alTrackCost} onChange={alTrackChange}>
                             <option value="" hidden>Select Model</option>
-                            {alTrackValues && Object.entries(alTrackValues).map(([key, { label, value }]) => (
+                            {alTrackValues && Object.entries(alTrackValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3457,7 +3459,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={bArrestorCost} onChange={bArrestorChange}>
                             <option value="" hidden>Select Model</option>
-                            {bArrestorValues && Object.entries(bArrestorValues).map(([key, { label, value }]) => (
+                            {bArrestorValues && Object.entries(bArrestorValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3471,7 +3473,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={jStopperCost} onChange={jStopperChange}>
                             <option value="" hidden>Select Model</option>
-                            {jStopperValues && Object.entries(jStopperValues).map(([key, { label, value }]) => (
+                            {jStopperValues && Object.entries(jStopperValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3485,7 +3487,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={dArrestorCost} onChange={dArrestorChange}>
                             <option value="" hidden>Select Model</option>
-                            {dArrestorValues && Object.entries(dArrestorValues).map(([key, { label, value }]) => (
+                            {dArrestorValues && Object.entries(dArrestorValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3499,7 +3501,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={wStripCost} onChange={wStripChange}>
                             <option value="" hidden>Select Model</option>
-                            {wStripValues && Object.entries(wStripValues).map(([key, { label, value }]) => (
+                            {wStripValues && Object.entries(wStripValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3513,7 +3515,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={wStripCost} onChange={wStripChange}>
                             <option value="" hidden>Select Model</option>
-                            {wStripValues && Object.entries(wStripValues).map(([key, { label, value }]) => (
+                            {wStripValues && Object.entries(wStripValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3527,7 +3529,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={touchlockCost} onChange={touchLockChange}>
                             <option value="">Select Model</option>
-                            {touchLockValues && Object.entries(touchLockValues).map(([key, { label, value }]) => (
+                            {touchLockValues && Object.entries(touchLockValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3541,7 +3543,7 @@ function Editquotees() {
                         <td>
                           <select class="form-select-select item-line w-75" value={screwtCost} onChange={screwChange}>
                             <option value="" hidden>Select Model</option>
-                            {screwValues && Object.entries(screwValues).map(([key, { label, value }]) => (
+                            {screwValues && Object.entries(screwValues || {}).map(([key, { label, value }]) => (
                               <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                             ))}
                           </select>
@@ -3583,7 +3585,7 @@ function Editquotees() {
                           <td>
                             <select class="form-select-select item-line w-75" value={marginCost} onChange={marginChange}>
                               <option value="" hidden>Select Margin Cost</option>
-                              {margin && Object.entries(margin).map(([key, { label, value }]) => (
+                              {margin && Object.entries(margin || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + Number(value).toFixed(2) + '/sqft'}</option>
                               ))}
                             </select>
@@ -3624,7 +3626,7 @@ function Editquotees() {
                           <td>
                             <select class="form-select-select item-line w-75" value={marketingCost} onChange={marketingChange}>
                               <option value="" hidden>Select Marketing Coast</option>
-                              {marketing && Object.entries(marketing).map(([key, { label, value }]) => (
+                              {marketing && Object.entries(marketing || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + Number(value).toFixed(2) + '/sqft'}</option>
                               ))}
                             </select>
@@ -3642,7 +3644,7 @@ function Editquotees() {
                           <td>
                             <select class="form-select-select item-line w-75" value={transportCost} onChange={transportChange}>
                               <option value="" hidden>Select Margin Cost</option>
-                              {transport && Object.entries(transport).map(([key, { label, value }]) => (
+                              {transport && Object.entries(transport || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + Number(value).toFixed(2) + '/sqft'}</option>
                               ))}
                             </select>
@@ -3656,7 +3658,7 @@ function Editquotees() {
                           <td>
                             <select class="form-select-select item-line w-75" value={labourFCost} onChange={labourFChange}>
                               <option value="" hidden>Select Labour Coast</option>
-                              {labourF && Object.entries(labourF).map(([key, { label, value }]) => (
+                              {labourF && Object.entries(labourF || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + Number(value).toFixed(2) + '/sqft'}</option>
                               ))}
                             </select>
@@ -3670,7 +3672,7 @@ function Editquotees() {
                           <td>
                             <select class="form-select-select item-line w-75" value={labourSCost} onChange={labourSChange}>
                               <option value="" hidden>Select Labour Coast</option>
-                              {labourS && Object.entries(labourS).map(([key, { label, value }]) => (
+                              {labourS && Object.entries(labourS || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + Number(value).toFixed(2) + '/sqft'}</option>
                               ))}
                             </select>
@@ -3685,7 +3687,7 @@ function Editquotees() {
                             <td>
                               <select class="form-select-select item-line w-75" value={glassCost} onChange={glassChange}>
                                 <option value="" hidden>Select Glass Cost</option>
-                                {glasses && Object.entries(glasses).map(([key, { label, value }]) => (
+                                {glasses && Object.entries(glasses || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + parseFloat(value).toFixed(2) + '/sqft'}</option>
                                 ))}
                               </select>
@@ -3701,7 +3703,7 @@ function Editquotees() {
                             <td>
                               <select class="form-select-select item-line w-75" value={boardCost} onChange={boardChange}>
                                 <option value="" hidden>Select Board Cost</option>
-                                {board && Object.entries(board).map(([key, { label, value }]) => (
+                                {board && Object.entries(board || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + parseFloat(value).toFixed(2) + '/sqft'}</option>
                                 ))}
                               </select>

@@ -1,3 +1,4 @@
+import { DEFAULT_COST_DATA, fetchCostDataService } from "../services/costManager";
 import { getMergedProfileDetails, findLocalDefaultProfile } from "../services/profileManager";
 import React, { useEffect, useState } from 'react';
 import { ReactSession } from 'react-client-session';
@@ -55,7 +56,7 @@ const App = () => {
   const [grill, setGrill] = useState('no');
   const [profileDetails, setProfileData] = useState(() => getMergedProfileDetails(null));
   const [qty, setQty] = useState(1);
-  const [costData, setCostData] = useState(true);
+  const [costData, setCostData] = useState(DEFAULT_COST_DATA.data);
   const [customProfile, setCustomProfile] = useState(0);
   const [calcBtn, setCalcBtn] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
@@ -113,10 +114,11 @@ const App = () => {
   useEffect(() => {
     const fetchcostData = async () => {
       try {
-        const response = await axios.post('https://upvcapi.sninfoserv.com/costs/', user);
-        setCostData(response.data.data);
-        // console.log('Cost',response.data);
-      } catch (error) { setProfileData(getMergedProfileDetails(null)); }
+        const cData = await fetchCostDataService(user);
+        setCostData(cData);
+      } catch (error) {
+        setCostData(DEFAULT_COST_DATA.data);
+      }
     };
 
     fetchcostData();
@@ -2875,7 +2877,7 @@ if(measure ==="ft"){
                             <td>Outer Frame Gasket</td>
                             <th ><select class="form-select-select item-line w-100" value={ProfilegasketCost} onChange={ProfilegasketChange}>
                               <option value="" hidden>Select Model</option>
-                              {Object.entries(ProfilegasketValues).map(([key, { label, value }]) => (
+                              {Object.entries(ProfilegasketValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -2889,7 +2891,7 @@ if(measure ==="ft"){
                             <td>Shutter Gasket</td>
                             <th ><select class="form-select-select item-line w-100" value={ShuttergasketCost} onChange={ShuttergasketChange}>
                               <option value="" hidden>Select Model</option>
-                              {Object.entries(ShuttergasketValues).map(([key, { label, value }]) => (
+                              {Object.entries(ShuttergasketValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -2903,7 +2905,7 @@ if(measure ==="ft"){
                             <td>Mullion Gasket</td>
                             <th ><select class="form-select-select item-line w-100" value={MulliongasketCost} onChange={MulliongasketChange}>
                               <option value="" hidden>Select Model</option>
-                              {Object.entries(MulliongasketValues).map(([key, { label, value }]) => (
+                              {Object.entries(MulliongasketValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -2917,7 +2919,7 @@ if(measure ==="ft"){
                             <td>Beeding Gasket</td>
                             <th ><select class="form-select-select item-line w-100" value={BeedinggasketCost} onChange={BeedinggasketChange}>
                               <option value="" hidden>Select Model</option>
-                              {Object.entries(BeedinggasketValues).map(([key, { label, value }]) => (
+                              {Object.entries(BeedinggasketValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                               ))}
                             </select>
@@ -2933,7 +2935,7 @@ if(measure ==="ft"){
                               <td >Mesh Gasket</td>
                               <th ><select class="form-select-select item-line w-100" value={meshgasketCost} onChange={meshgasketChange}>
                                 <option value="" hidden>Select Model</option>
-                                {Object.entries(meshgasketValues).map(([key, { label, value }]) => (
+                                {Object.entries(meshgasketValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -2956,7 +2958,7 @@ if(measure ==="ft"){
                             <th>Wastage( {data.wastage}% )</th>
                             <th ><select class="form-select-select item-line w-100" value={wastageCost} onChange={wasteChange}>
                               <option value="" hidden>Select Model</option>
-                              {wasteValues && Object.entries(wasteValues).map(([key, { label, value }]) => (
+                              {wasteValues && Object.entries(wasteValues || {}).map(([key, { label, value }]) => (
                                 <option key={key} value={value}>{label + ' ' + value + '%'}</option>
                               ))}
                             </select>
@@ -2994,7 +2996,7 @@ if(measure ==="ft"){
                                 <td>
                                   <select class="form-select-select item-line w-75" value={meshCost} onChange={meshChange}>
                                     <option value="" hidden>Select Model</option>
-                                    {meshValues && Object.entries(meshValues).map(([key, { label, value }]) => (
+                                    {meshValues && Object.entries(meshValues || {}).map(([key, { label, value }]) => (
                                       <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                     ))}
                                   </select>
@@ -3008,7 +3010,7 @@ if(measure ==="ft"){
                                 <td>
                                   <select class="form-select-select item-line w-75" value={steelmeshCost} onChange={steelmeshChange}>
                                     <option value="" hidden>Select Model</option>
-                                    {steelmeshValues && Object.entries(steelmeshValues).map(([key, { label, value }]) => (
+                                    {steelmeshValues && Object.entries(steelmeshValues || {}).map(([key, { label, value }]) => (
                                       <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                     ))}
                                   </select>
@@ -3022,7 +3024,7 @@ if(measure ==="ft"){
                                 <td>
                                   <select class="form-select-select item-line w-75" value={meshHandle} onChange={meshHandleChange}>
                                     <option value="" hidden>Select Model</option>
-                                    {meshJAValues && Object.entries(meshHandleValues).map(([key, { label, value }]) => (
+                                    {meshJAValues && Object.entries(meshHandleValues || {}).map(([key, { label, value }]) => (
                                       <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                     ))}
                                   </select>
@@ -3036,7 +3038,7 @@ if(measure ==="ft"){
                                 <td>
                                   <select class="form-select-select item-line w-75" value={meshWS} onChange={meshWSChange}>
                                     <option value="" hidden>Select Model</option>
-                                    {meshJAValues && Object.entries(meshWSValues).map(([key, { label, value }]) => (
+                                    {meshJAValues && Object.entries(meshWSValues || {}).map(([key, { label, value }]) => (
                                       <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                     ))}
                                   </select>
@@ -3050,7 +3052,7 @@ if(measure ==="ft"){
                                 <td>
                                   <select class="form-select-select item-line w-75" value={meshHinges} onChange={meshHingesChange}>
                                     <option value="" hidden>Select Model</option>
-                                    {meshJAValues && Object.entries(meshHingesValues).map(([key, { label, value }]) => (
+                                    {meshJAValues && Object.entries(meshHingesValues || {}).map(([key, { label, value }]) => (
                                       <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                     ))}
                                   </select>
@@ -3064,7 +3066,7 @@ if(measure ==="ft"){
                                 <td>
                                   <select class="form-select-select item-line w-75" value={meshLock} onChange={meshLockChange}>
                                     <option value="" hidden>Select Model</option>
-                                    {meshJAValues && Object.entries(meshLockValues).map(([key, { label, value }]) => (
+                                    {meshJAValues && Object.entries(meshLockValues || {}).map(([key, { label, value }]) => (
                                       <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                     ))}
                                   </select>
@@ -3081,7 +3083,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={steelFramCost} onChange={steelframeChange}>
                                 <option value="" hidden>Select Model</option>
-                                {steelValues && Object.entries(steelValues).map(([key, { label, value }]) => (
+                                {steelValues && Object.entries(steelValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3095,7 +3097,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={steelMullionCost} onChange={steelMullionChange}>
                                 <option value="" hidden>Select Model</option>
-                                {steelMullionValues && Object.entries(steelMullionValues).map(([key, { label, value }]) => (
+                                {steelMullionValues && Object.entries(steelMullionValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3110,7 +3112,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={mullionClampCost} onChange={mullionClampChange}>
                                 <option value="" hidden>Select Model</option>
-                                {mullionClampValues && Object.entries(mullionClampValues).map(([key, { label, value }]) => (
+                                {mullionClampValues && Object.entries(mullionClampValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3125,7 +3127,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={steelShutterCost} onChange={steelShutteChange}>
                                 <option value="" hidden>Select Model</option>
-                                {steelShutterValues && Object.entries(steelShutterValues).map(([key, { label, value }]) => (
+                                {steelShutterValues && Object.entries(steelShutterValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3139,7 +3141,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={lockCost} onChange={lockChange}>
                                 <option value="">Select Model</option>
-                                {lockes && Object.entries(lockes).map(([key, { label, value }]) => (
+                                {lockes && Object.entries(lockes || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3153,7 +3155,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={handleCost} onChange={handleChange}>
                                 <option value="">Select Model</option>
-                                {handles && Object.entries(handles).map(([key, { label, value }]) => (
+                                {handles && Object.entries(handles || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3167,7 +3169,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={espagCost} onChange={espagChange}>
                                 <option value="">Select Model</option>
-                                {espagValues && Object.entries(espagValues).map(([key, { label, value }]) => (
+                                {espagValues && Object.entries(espagValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3181,7 +3183,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={espagmCost} onChange={espagmChange}>
                                 <option value="">Select Model</option>
-                                {espagmValues && Object.entries(espagmValues).map(([key, { label, value }]) => (
+                                {espagmValues && Object.entries(espagmValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3195,7 +3197,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={frictionStayCost} onChange={frictionStayChange}>
                                 <option value="">Select Model</option>
-                                {frictionStayValues && Object.entries(frictionStayValues).map(([key, { label, value }]) => (
+                                {frictionStayValues && Object.entries(frictionStayValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3209,7 +3211,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={hingesCost} onChange={hingesChange}>
                                 <option value="" hidden>Select Model</option>
-                                {hinges && Object.entries(hinges).map(([key, { label, value }]) => (
+                                {hinges && Object.entries(hinges || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3223,7 +3225,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={runnerblockCost} onChange={runnerblockChange}>
                                 <option value="">Select Model</option>
-                                {runnerblockValues && Object.entries(runnerblockValues).map(([key, { label, value }]) => (
+                                {runnerblockValues && Object.entries(runnerblockValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3237,7 +3239,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={securityClipCost} onChange={securityClipChange}>
                                 <option value="">Select Model</option>
-                                {securityClipValues && Object.entries(securityClipValues).map(([key, { label, value }]) => (
+                                {securityClipValues && Object.entries(securityClipValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3253,7 +3255,7 @@ if(measure ==="ft"){
                               <td>
                                 <select class="form-select-select item-line w-75" value={grillCost} onChange={grillChange}>
                                   <option value="" hidden>Select Model</option>
-                                  {grillValues && Object.entries(grillValues).map(([key, { label, value }]) => (
+                                  {grillValues && Object.entries(grillValues || {}).map(([key, { label, value }]) => (
                                     <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                   ))}
                                 </select>
@@ -3268,7 +3270,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={screwtCost} onChange={screwChange}>
                                 <option value="" hidden>Select Model</option>
-                                {screwValues && Object.entries(screwValues).map(([key, { label, value }]) => (
+                                {screwValues && Object.entries(screwValues || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + value}</option>
                                 ))}
                               </select>
@@ -3309,7 +3311,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={marginCost} onChange={marginChange}>
                                 <option value="" hidden>Select Margin Cost</option>
-                                {margin && Object.entries(margin).map(([key, { label, value }]) => (
+                                {margin && Object.entries(margin || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + parseFloat(value).toFixed(2) + '/sqft'}</option>
                                 ))}
                               </select>
@@ -3350,7 +3352,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={marketingCost} onChange={marketingChange}>
                                 <option value="" hidden>Select Marketing Coast</option>
-                                {marketing && Object.entries(marketing).map(([key, { label, value }]) => (
+                                {marketing && Object.entries(marketing || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + parseFloat(value).toFixed(2) + '/sqft'}</option>
                                 ))}
                               </select>
@@ -3368,7 +3370,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={transportCost} onChange={transportChange}>
                                 <option value="" hidden>Select Transportation Cost</option>
-                                {transport && Object.entries(transport).map(([key, { label, value }]) => (
+                                {transport && Object.entries(transport || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + parseFloat(value).toFixed(2) + '/km'}</option>
                                 ))}
                               </select>
@@ -3382,7 +3384,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={labourFCost} onChange={labourFChange}>
                                 <option value="" hidden>Select Labour Coast</option>
-                                {labourF && Object.entries(labourF).map(([key, { label, value }]) => (
+                                {labourF && Object.entries(labourF || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + parseFloat(value).toFixed(2) + '/sqft'}</option>
                                 ))}
                               </select>
@@ -3396,7 +3398,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={labourSCost} onChange={labourSChange}>
                                 <option value="" hidden>Select Labour Coast</option>
-                                {labourS && Object.entries(labourS).map(([key, { label, value }]) => (
+                                {labourS && Object.entries(labourS || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + parseFloat(value).toFixed(2) + '/sqft'}</option>
                                 ))}
                               </select>
@@ -3410,7 +3412,7 @@ if(measure ==="ft"){
                             <td>
                               <select class="form-select-select item-line w-75" value={glassCost} onChange={glassChange}>
                                 <option value="" hidden>Select Glass Cost</option>
-                                {glasses && Object.entries(glasses).map(([key, { label, value }]) => (
+                                {glasses && Object.entries(glasses || {}).map(([key, { label, value }]) => (
                                   <option key={key} value={value}>{label + ' - ₹ ' + parseFloat(value).toFixed(2) + '/sqft'}</option>
                                 ))}
                               </select>

@@ -381,7 +381,7 @@ const App = () => {
                       <p>Select Outer Frame Profile</p>
                             <select class="form-control text-sm" value={selectedFrameId || ''} onChange={handleFrameIdChange}>
                             {selectedFrameSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                              {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame.items.map((item) => (
+                              {selectedFrameSeries && seriesDataFrame?.items && seriesDataFrame?.items?.map((item) => (
                                 <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                               ))}
                             </select>
@@ -401,7 +401,7 @@ const App = () => {
                         <p>Select Shutter Profile</p>
                         <select class="form-control text-sm" value={selectedShutterId || ''} onChange={handleShutterIdChange}>
                           {selectedShutterSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                            {seriesDataShutter && seriesDataShutter.items.map((item) => (
+                            {seriesDataShutter && seriesDataShutter?.items?.map((item) => (
                              <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                            ))}
                         </select>
@@ -420,7 +420,7 @@ const App = () => {
                         <p>Select InterLock Profile</p>
                         <select class="form-control text-sm" value={selectedInterLockId || ''} onChange={handleInterLockIdChange}>
                           {selectedInterLockSeries ? (<option value="">Select ID</option>):(<option value="">Select Series </option>)}
-                          {seriesDataInterLock && seriesDataInterLock.items.map((item) => (
+                          {seriesDataInterLock && seriesDataInterLock?.items?.map((item) => (
                             <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                           ))}
                         </select>
@@ -439,7 +439,7 @@ const App = () => {
                         <p>Select Mullion Profile</p>
                         <select class="form-control text-sm" value={selectedMullionId || ''} onChange={handleMullionIdChange}>
                           {selectedMullionSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                            {seriesDataMullion && seriesDataMullion.items.map((item) => (
+                            {seriesDataMullion && seriesDataMullion?.items?.map((item) => (
                               <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                             ))}
                         </select>
@@ -458,7 +458,7 @@ const App = () => {
                         <p>Select Beading Profile</p>
                         <select class="form-control text-sm" value={selectedBeedingId || ''} onChange={handleBeedingIdChange}>
                           {selectedBeedingSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                            {seriesDataBeeding && seriesDataBeeding.items.map((item) => (
+                            {seriesDataBeeding && seriesDataBeeding?.items?.map((item) => (
                               <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                             ))}
                         </select>
@@ -477,7 +477,7 @@ const App = () => {
                         <p>Select Cupler Joint Profile</p>
                         <select class="form-control text-sm" value={selectedCuplerId || ''} onChange={handleCuplerIdChange}>
                           {selectedCuplerSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                          {seriesDataCupler && seriesDataCupler.items.map((item) => (
+                          {seriesDataCupler && seriesDataCupler?.items?.map((item) => (
                              <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                           ))}
                         </select>
@@ -496,7 +496,7 @@ const App = () => {
                         <p>Select Mesh Profile</p>
                         <select class="form-control text-sm" value={selectedMeshId || ''} onChange={handleMeshIdChange}>
                           {selectedMeshSeries ? (<option value="">Select ID</option>):(<option value="">Select Series First</option>)}
-                          {seriesDataMesh && seriesDataMesh.items.map((item) => (
+                          {seriesDataMesh && seriesDataMesh?.items?.map((item) => (
                             <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                           ))}
                         </select>
@@ -515,7 +515,7 @@ const App = () => {
                         <p>Select Panel Profile</p>
                         <select class="form-control text-sm" value={selectedPanelId || ''} onChange={handlePanelIdChange}>
                           {setSelectedPanelSeries ? (<option value="">Select ID</option>):(<option value="">Select Series </option>)}
-                            {seriesDataPanel && seriesDataPanel.items.map((item) => (
+                            {seriesDataPanel && seriesDataPanel?.items?.map((item) => (
                               <option key={item.id} value={item.id}>{item.id+' - '+ item.name}</option>
                            ))}
                         </select>
