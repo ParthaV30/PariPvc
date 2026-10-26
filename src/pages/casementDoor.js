@@ -1885,27 +1885,17 @@ const App = () => {
           setSelectedFrameSeries(data.frameSeries || series);
           setSelectedFrameId(data.frame);
         }
-        if (data.mesh) {
-          setSelectedMeshSeries(data.meshSeries || series);
-          setSelectedMeshId(data.mesh);
-        }
         if (data.mullion) {
           setSelectedMullionSeries(data.mullionSeries || series);
           setSelectedMullionId(data.mullion);
         }
+        if (data.panel) {
+          setSelectedPanelSeries(data.panelSeries || series);
+          setSelectedPanelId(data.panel);
+        }
         if (data.shutter) {
           setSelectedShutterSeries(data.shutterSeries || series);
           setSelectedShutterId(data.shutter);
-        }
-        if (data.cupler) {
-          setSelectedCuplerSeries(data.cuplerSeries || series);
-          setSelectedCuplerId(data.cupler);
-        }
-        if (data.interLock || data.interlock) {
-          if (typeof setSelectedInterLockSeries === 'function') {
-            setSelectedInterLockSeries(data.interSeries || series);
-            setSelectedInterLockId(data.interlock || data.interLock);
-          }
         }
       }
     } catch (error) {

@@ -1830,12 +1830,6 @@ const App = () => {
           setSelectedCuplerSeries(data.cuplerSeries || series);
           setSelectedCuplerId(data.cupler);
         }
-        if (data.interLock || data.interlock) {
-          if (typeof setSelectedInterLockSeries === 'function') {
-            setSelectedInterLockSeries(data.interSeries || series);
-            setSelectedInterLockId(data.interlock || data.interLock);
-          }
-        }
       }
     } catch (error) {
       console.error('Error in handleContinueCalc:', error);

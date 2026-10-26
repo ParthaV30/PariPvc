@@ -2022,13 +2022,13 @@ const App = () => {
           setSelectedFrameSeries(data.frameSeries || series);
           setSelectedFrameId(data.frame);
         }
-        if (data.mesh) {
-          setSelectedMeshSeries(data.meshSeries || series);
-          setSelectedMeshId(data.mesh);
-        }
         if (data.mullion) {
           setSelectedMullionSeries(data.mullionSeries || series);
           setSelectedMullionId(data.mullion);
+        }
+        if (data.panel) {
+          setSelectedPanelSeries(data.panelSeries || series);
+          setSelectedPanelId(data.panel);
         }
         if (data.shutter) {
           setSelectedShutterSeries(data.shutterSeries || series);
@@ -2039,10 +2039,8 @@ const App = () => {
           setSelectedCuplerId(data.cupler);
         }
         if (data.interLock || data.interlock) {
-          if (typeof setSelectedInterLockSeries === 'function') {
-            setSelectedInterLockSeries(data.interSeries || series);
-            setSelectedInterLockId(data.interlock || data.interLock);
-          }
+          setSelectedInterLockSeries(data.interSeries || series);
+          setSelectedInterLockId(data.interlock || data.interLock);
         }
       }
     } catch (error) {
