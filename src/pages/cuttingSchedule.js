@@ -2,62 +2,82 @@ import React, { useEffect, useState } from "react";
 import { ReactSession } from 'react-client-session';
 import { useRef } from "react";
 import axios from "axios";
-import { getCompanySettings } from "../services/dbService";
+import { getCompanySettings, getQuotes, getQuoteById } from "../services/dbService";
+import Navbar from "./navbar";
 
-export default function NewCuttingSchedule({ quote }) {
-    // console.log("Rendering NewCuttingSchedule with quote:", quote);
-
+export default function NewCuttingSchedule({ quote: propQuote }) {
   const urlParams = new URLSearchParams(window.location.search);
-      const quoteIds = urlParams.get('id');
-      const arrayValues = urlParams.get('arrayValues');
-      const userId = ReactSession.get('upvcuserId');
-      const useNumber = ReactSession.get('upvcNumber');
-      const Address = ReactSession.get('upvcAddress');
-      const Name = ReactSession.get('upvcuserName');
-      const Image = ReactSession.get('upvcImage');
-      const regid = ReactSession.get("upvcregid");
-      const Empid = ReactSession.get("upvcempid");
-      const userType = ReactSession.get("upvcuserType");
-     const profileImage = quote?.quoteDetails[0]?.quoteData?.selectedProfile || 'profile_logo';
-      
-    let users='';
-    if (userType === '3') {
-      users =  Empid ;
-    } else {
-      users = userId ;
-    }
-    const user = { "userId": users };
+  const quoteIds = urlParams.get('id');
+  const userId = ReactSession.get('upvcuserId') || '1';
+  const Empid = ReactSession.get("upvcempid");
+  const userType = ReactSession.get("upvcuserType");
 
+  let users = userType === '3' ? (Empid || userId) : userId;
+
+  const [internalQuote, setInternalQuote] = useState(null);
+  const quote = propQuote || internalQuote;
+  const isStandalone = !propQuote;
+
+  const profileImage = quote?.quoteDetails?.[0]?.quoteData?.selectedProfile || 'profile_logo';
 
   const [seriesData, setSeriesData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [brandDatas, setBdata] = useState(null);
 
-  // console.log(seriesData); 
-
-
-   const brandData = async () => {
+  useEffect(() => {
+    async function loadQuote() {
+      if (propQuote) return;
       try {
-        const settings = await getCompanySettings(users);
-        if (Array.isArray(settings) && settings.length > 0) {
-          setBdata(settings);
-          return;
+        let q = null;
+        if (quoteIds) {
+          q = await getQuoteById(quoteIds);
         }
-      } catch (e) {}
+        if (!q) {
+          const list = await getQuotes(users);
+          if (Array.isArray(list) && list.length > 0) {
+            q = list[0];
+          }
+        }
+        if (q) {
+          const formatted = {
+            ...q,
+            client: { name: q.client_name || q.name || 'Client' },
+            quoteDetails: (q.items || []).map((it, idx) => ({
+              id: it.id || idx,
+              quoteData: it.quoteData || it.data || it
+            }))
+          };
+          setInternalQuote(formatted);
+        }
+      } catch (e) {
+        console.warn('Error loading quote for cutting schedule:', e);
+      }
+    }
+    loadQuote();
+  }, [propQuote, quoteIds, users]);
 
-      try {
-        const response = await axios.get('https://upvcapi.sninfoserv.com/company/', {params: { userId: users }});
-        if(response.data?.status === 'success'){
-          setBdata(response.data.data);
-        }
-      } catch (error) {
-        console.error('Error fetching brand data:', error);
-      } 
-    };
+  const brandData = async () => {
+    try {
+      const settings = await getCompanySettings(users);
+      if (Array.isArray(settings) && settings.length > 0) {
+        setBdata(settings);
+        return;
+      }
+    } catch (e) {}
+
+    try {
+      const response = await axios.get('https://upvcapi.sninfoserv.com/company/', {params: { userId: users }});
+      if (response.data?.status === 'success') {
+        setBdata(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching brand data:', error);
+    } 
+  };
       
-    useEffect(() => {
-      brandData();
-    },[]);
+  useEffect(() => {
+    brandData();
+  },[]);
 
   // Convert measurements to mm
   function convertToMM(value, measure) {
@@ -326,27 +346,44 @@ export default function NewCuttingSchedule({ quote }) {
 
   return (
   <div>
-  
-    
-	 <div class="modal fade custom-modal" id="onloadModals" tabindex="-1" aria-labelledby="onloadModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content" align="center">
-          <div class="mt-3 mb-3">
-            <h5>Preparing Cutting Schedule...</h5>
+    {isStandalone && <Navbar />}
+    <div className={isStandalone ? "pc-container" : ""}>
+      <div className={isStandalone ? "pc-content" : ""}>
+        {isStandalone && (
+          <div className="d-flex justify-content-between align-items-center mb-4 mt-2">
+            <div>
+              <h4 className="mb-1">Cutting Schedule</h4>
+              <p className="text-muted mb-0">{quote?.client?.name || 'Client'} - {quote?.quote_id || quote?.uniqueId || ''}</p>
+            </div>
+            <button 
+              type="button" 
+              className="btn btn-primary"
+              onClick={() => window.print()}
+            >
+              <i className="feather icon-printer me-2"></i> Print / Save PDF
+            </button>
           </div>
-        </div>
-      </div>
-    </div>
+        )}
 
-    <div
-      id="pdf-cutting-schedule"
-      className="hide"
-      style={{
-        maxWidth: "207mm",
-        minWidth: "207mm",
-        padding: "20px"
-      }}
-    >
+        {!quote && isStandalone ? (
+          <div className="card p-5 text-center">
+            <h5>No Quotation Found</h5>
+            <p className="text-muted">Please create a quotation or select one from the quotations list.</p>
+            <a href="/quote" className="btn btn-outline-primary mx-auto" style={{ width: "200px" }}>
+              View Quotations
+            </a>
+          </div>
+        ) : (
+          <div
+            id="pdf-cutting-schedule"
+            className={isStandalone ? "card p-4 bg-white shadow-sm" : "hide"}
+            style={{
+              maxWidth: isStandalone ? "100%" : "207mm",
+              minWidth: isStandalone ? "100%" : "207mm",
+              padding: "20px",
+              margin: "0 auto"
+            }}
+          >
 
       {/* ================= HEADER TABLE ================= */}
       <table width="100%">
@@ -569,8 +606,10 @@ export default function NewCuttingSchedule({ quote }) {
       })}
 
           </table>
+        </div>
+      )}
+      </div>
     </div>
-</div>
-
+  </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSession } from 'react-client-session';
 import axios from 'axios';
-import { getCompanySettings, getQuoteById } from '../services/dbService';
+import { getCompanySettings, getQuoteById, getQuotes } from '../services/dbService';
 import numeral from 'numeral';
 import left from '../images/handleLeft.png';
 import right from '../images/handleRight.png';
@@ -122,12 +122,21 @@ import { toWords } from 'number-to-words';
   
     const fetchData = async () => {
       try {
-        const quote = await getQuoteById(quoteIds);
+        let quote = null;
+        if (quoteIds) {
+          quote = await getQuoteById(quoteIds);
+        }
+        if (!quote) {
+          const list = await getQuotes(users);
+          if (Array.isArray(list) && list.length > 0) {
+            quote = list[0];
+          }
+        }
         if (quote) {
           const quoteObj = {
-            quoteId: quote.quote_id || quoteIds,
+            quoteId: quote.quote_id || quote.uniqueId || quoteIds || 'QUOTE-1',
             client: {
-              name: quote.client_name || 'Customer',
+              name: quote.client_name || quote.name || 'Customer',
               phone: quote.phone || '',
               location: quote.location || '',
               siteLocation: quote.site_location || ''
